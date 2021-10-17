@@ -1,25 +1,61 @@
 from pico2d import *
 
 class Map:
-    def __init__(self, width, height, tile_board, tile_x, tile_y, tile_name):
+    def __init__(self, width, height, tile_board, tile_x, tile_y, monster_number):
         self.width = width
         self.height = height
         self.tile_board = tile_board
         self.tile_x = tile_x
         self.tile_y = tile_y
-        self.tile_name = tile_name
+        self.monster_number = monster_number
 
 
-test_map = Map(800, 600, [[0] * 30 for _ in range(40)], 40, 30, 'tiles1.png')
+test_map = Map(1600, 600, [[0] * 30 for _ in range(80)], 80, 30, {'goomba':1, 'koopagreen':1})
+test_map.tile_width = test_map.width // test_map.tile_x
+test_map.tile_height = test_map.height // test_map.tile_y
+
 for i in range(0, 39):
     test_map.tile_board[i][1] = 1
+    test_map.tile_board[i][0] = 2
+
+for i in range(39, 55):
+    test_map.tile_board[i][i - 37] = 3
+    for j in range(0, i - 37):
+        test_map.tile_board[i][j] = 2
 
 
-def draw_map(map, tile_name):
-    tile = load_image(tile_name)
-    for j in range(0, map.tile_x):
-        for k in range(0, map.tile_y):
-            if map.tile_board[j][k] == 1:
-                tile.clip_draw(2, 1282, 90, 30, j * 20, k * 20, 20, 20)
+def ground_collide(character, map): # 캐릭터와 바닥 충돌 체크
+    if character.y < 0:
+        character.die = 'die'
+    else:
+        x = int((character.x + character.size_x // 2) // map.tile_width)
+        y = int(character.y // map.tile_height)
+        if map.tile_board[x][y-1] == 3 or map.tile_board[x][y-1] == 4:
+            y = y - 1
 
+        if map.tile_board[x][y] == 0:
+            if not character.jump_bool and  map.tile_board[x][y - 1] == 0:
+                # and (character.x + character.size_x / 2) % map.tile_width != 0
+                character.jump_bool = True
+                character.jump_power = 0
+        elif map.tile_board[x][y] == 1: # flat ground
+            character.y = y * map.tile_height + map.tile_height + 10
+            if character.jump_bool:
+                character.jump_bool = False
+        elif map.tile_board[x][y] == 2:
+            character.y = y * map.tile_height + map.tile_height + 10
+            if character.jump_bool:
+                character.jump_bool = False
+        elif map.tile_board[x][y] == 3: # slopping ground right up
+            if not character.jump_bool:
+                character.y = (character.x % test_map.tile_width) / test_map.tile_width * test_map.tile_height + y * map.tile_height + 10
+            elif character.jump_power < 0:
+                character.jump_bool = False
+                character.y = (character.x % test_map.tile_width) / test_map.tile_width * test_map.tile_height + y * map.tile_height + 10
+        elif map.tile_board[x][y] == 4: # slopping ground right up
+            if not character.jump_bool:
+                character.y = test_map.tile_width - (character.x % test_map.tile_width) / test_map.tile_width * test_map.tile_height + y * map.tile_height + 10
+            elif jump_power < 0:
+                character.jump_bool = False
+                character.y = (character.x % test_map.tile_width) / test_map.tile_width * test_map.tile_height + y * map.tile_height + 10
 
