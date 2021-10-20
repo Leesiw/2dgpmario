@@ -36,10 +36,10 @@ def handle_events():
         if event.type == SDL_QUIT:
             running = False
         elif event.type == SDL_KEYDOWN:
-            if event.key == SDLK_RIGHT:
+            if event.key == SDLK_d:
                 mario.state = 'right'
                 change_animation(mario, 'right_run')
-            elif event.key == SDLK_LEFT:
+            elif event.key == SDLK_a:
                 mario.state = 'left'
                 change_animation(mario, 'left_run')
             if event.key == SDLK_SPACE:
@@ -56,11 +56,11 @@ def handle_events():
                         else:
                             change_animation(mario, 'left_jump')
         elif event.type == SDL_KEYUP:
-            if event.key == SDLK_RIGHT:
+            if event.key == SDLK_d:
                 mario.state = 'standing'
                 mario.speed = 0
                 change_animation(mario, 'right_standing')
-            elif event.key == SDLK_LEFT:
+            elif event.key == SDLK_a:
                 mario.state = 'standing'
                 mario.speed = 0
                 # mario.speed += 10
