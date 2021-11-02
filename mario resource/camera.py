@@ -8,8 +8,6 @@ class Camera:
         self.height = height
 
 
-camera = Camera(400, 300, 800, 600)
-
 def update_camera(camera, map, mario):
     if mario.x < camera.width / 2:
         camera.x = camera.width / 2
@@ -31,7 +29,7 @@ def update_camera(camera, map, mario):
         camera.y = mario.y
         camera.start_y = camera.y - (camera.height / 2)
 
-def draw_map(map, cameara):
+def draw_map(map, camera):
     x_first = camera.x - (camera.width / 2) # // map.tile_width - 1
     y_first = camera.y - (camera.height / 2) # // map.tile_height - 2
 
