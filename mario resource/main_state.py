@@ -5,7 +5,7 @@ import gameover_state
 
 from map import *
 from interaction import *
-from mario import *
+from character import *
 from bkground import *
 
 name = "MainState"
@@ -16,11 +16,17 @@ name = "MainState"
 # camera = None
 
 def enter():
-    global mario
+    global mario, all_goomba
     mario = Mario(600, 50)
+    all_goomba = All_goomba(3)
+    all_goomba.list = [Goomba(100, 50, 200), Goomba(200, 50, 300), Goomba(300, 50, 400)]
+    all_koopagreen = All_koopagreen(3)
+    all_koopagreen.list = [KoopaGreen(400, 50, 500), KoopaGreen(500, 50, 600), KoopaGreen(600, 50, 700)]
     bk_ground = Bkground()
     game_world.add_object(bk_ground, 0)
     game_world.add_object(mario, 1)
+    game_world.add_object(all_goomba, 1)
+    game_world.add_object(all_koopagreen, 1)
 
 def exit():
     game_world.clear()

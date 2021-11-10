@@ -1,6 +1,7 @@
-from animation import *
-from camera import *
-from map import *
+# from animation import *
+# from camera import *
+# from map import *
+from pico2d import *
 
 # class Character:
 #     def __init__(self, name, ani, x, y, speed, state, animation, size_x, size_y, x_left, x_right, die):
@@ -132,6 +133,11 @@ class Mario:
                 exit(-1)
             self.cur_state.enter(self, event)
 
+        if self.jump_bool:
+            if self.jump_power > -15:
+                self.jump_power -= 2
+            self.y += self.jump_power
+
     def draw(self):
         if self.jump_bool:
             if self.velocity == 1:
@@ -156,12 +162,6 @@ class Mario:
         if not self.jump_bool:
             self.jump_bool = True
             self.jump_power = 17
-
-    def jump(self):
-        if self.jump_bool:
-            if self.jump_power > -15:
-                self.jump_power -= 2
-            self.y += self.jump_power
 
     def fire_ball(self):
         pass
