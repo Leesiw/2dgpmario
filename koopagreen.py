@@ -25,9 +25,11 @@ class RunState:
 
     def draw(koopagreen):
         if koopagreen.velocity == 1:
-            koopagreen.image.clip_draw(48, 1328 - 32 * koopagreen.frame, 16, 32, koopagreen.x, koopagreen.y, 40, 40)
+            koopagreen.image.clip_draw(48, 1328 - 32 * koopagreen.frame, 16, 32,
+                                       koopagreen.x - koopagreen.camera_x, koopagreen.y - koopagreen.camera_y, 40, 40)
         else:
-            koopagreen.image.clip_draw(0, 1328 - 32 * koopagreen.frame, 16, 32, koopagreen.x, koopagreen.y, 40, 40)
+            koopagreen.image.clip_draw(0, 1328 - 32 * koopagreen.frame, 16, 32,
+                                       koopagreen.x - koopagreen.camera_x, koopagreen.y - koopagreen.camera_y, 40, 40)
 
 
 next_state_table = {
@@ -39,6 +41,8 @@ class KoopaGreen:
 
     def __init__(self, x, y, next_x):
         self.x, self.y = x, y
+        self.size_x, self.size_y = 40, 40
+        self.jump_bool = False
         self.start_x = x
         self.next_x = next_x
         self.frame = 0
@@ -47,8 +51,10 @@ class KoopaGreen:
         self.event_que = []
         self.cur_state = RunState
         self.cur_state.enter(self, None)
+        self.camera_x, self.camera_y = 0, 0
+
         if KoopaGreen.image == None:
-            KoopaGreen.image = load_image('koopagreen.png')
+            KoopaGreen.image = load_image('resource/koopagreen.png')
 
     def add_event(self, event):
         self.event_que.insert(0, event)

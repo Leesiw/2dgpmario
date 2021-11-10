@@ -1,0 +1,25 @@
+0001
+
+map_width = 800
+map_height = 800
+
+mario_start_x = 600
+mario_start_y = 50
+
+goomba_number = 10
+goomba_1 = 100, 50, 200
+goomba_2 = 200, 50, 300
+goomba_3 = 300, 50, 400
+goomba_4 = 100, 50, 200
+goomba_5 = 200, 50, 300
+goomba_6 = 300, 50, 400
+goomba_7 = 100, 50, 200
+goomba_8 = 200, 50, 300
+goomba_9 = 300, 50, 400
+goomba_10 = 300, 50, 400
+
+koopagreen_number = 4
+koopagreen_1 = 100, 50, 200
+koopagreen_2 = 200, 50, 300
+koopagreen_3 = 300, 50, 400
+koopagreen_4 = 100, 50, 200
