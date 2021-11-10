@@ -22,16 +22,17 @@ small_mario_animation['left_run'] = Animation('mario.png.gif', 20, 24, 20, 3, 16
 small_mario_animation['right_run'] = Animation('mario.png.gif', 20, 24, 20, 2, 143, True, 12)
 small_mario_animation['die'] = Animation('mario.png.gif', 25, 24, 25, 56, 27, True, 4)
 
-#goomba
+# goomba
 goomba_animation = {}
 goomba_animation['left_run'] = Animation('goomba_left.png', 30, 30, 31, 0, 867, False, 8)
 goomba_animation['right_run'] = Animation('goomba_right.png', 30, 30, 31, 10, 867, False, 8)
 goomba_animation['die'] = Animation('goomba_right.png', 30, 30, 31, 10, 604, False, 8)
 
-#koopagreen
+# koopagreen
 koopagreen_animation = {}
 koopagreen_animation['left_run'] = Animation('koopagreen_left.gif', 16, 32, 32, 0, 1328, False, 16)
 koopagreen_animation['right_run'] = Animation('koopagreen_right.gif', 16, 32, 32, 16, 1328, False, 16)
 koopagreen_animation['die'] = Animation('koopagreen_right.gif', 0, 24, 20, 2, 604, False, 8)
+
 
 

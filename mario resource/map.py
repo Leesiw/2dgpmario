@@ -4,6 +4,7 @@ from pico2d import *
 class Map:
     all_goomba = None
     all_koopagreen = None
+    all_box = None
     tile_width = 0
     tile_height = 0
     def __init__(self, width, height, tile_board, tile_x, tile_y, monster_number):
