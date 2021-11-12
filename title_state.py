@@ -5,16 +5,17 @@ from pico2d import *
 
 name = "TitleState"
 image = None
-
+font = None
 
 def enter():
-    global image
+    global image, font
     image = load_image('resource/title.png')
-
+    font = load_font('resource/SuperMario256.ttf', 30)
 
 def exit():
-    global image
+    global image, font
     del(image)
+    del(font)
 
 
 def handle_events():
@@ -32,6 +33,7 @@ def handle_events():
 def draw():
     clear_canvas()
     image.draw(400, 300, 800, 600)
+    font.draw(300, 100, 'PRESS SPACE', (0, 0, 0))
     update_canvas()
 
 
