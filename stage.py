@@ -2,6 +2,7 @@ from camera import *
 from map import *
 from bkground import *
 from character import *
+from interaction import *
 
 class Stage:
     def __init__(self, id):
@@ -21,9 +22,13 @@ class Stage:
                 self.map.tile_board[i][1] = 1
                 self.map.tile_board[i][0] = 2
 
-            for i in range(39, 55):
+            for i in range(39, 45):
                 self.map.tile_board[i][i - 37] = 3
                 for j in range(0, i - 37):
+                    self.map.tile_board[i][j] = 2
+            for i in range(45, 51):
+                self.map.tile_board[i][-i + 52] = 4
+                for j in range(0, -i + 52):
                     self.map.tile_board[i][j] = 2
 
         elif id == 2:
@@ -53,11 +58,19 @@ class Stage:
         update_camera(self.camera, self.map, self.mario)
 
         ground_collide(self.mario, self.map)
-        # for g in self.all_monster.goomba.list:
-        #     ground_collide(g, self.map)
-        # for k in self.all_monster.koopagreen.list:
-        #     ground_collide(k, self.map)
+        for g in self.all_monster.goomba.list:
+             ground_collide(g, self.map)
+        for k in self.all_monster.koopagreen.list:
+            ground_collide(k, self.map)
 
         character_camera_update(self.mario, self.camera)
         self.all_monster.camera = self.camera
+
+        for g in self.all_monster.goomba.list:
+            if self.camera.start_x - g.size_x < g.x < self.camera.start_x + self.camera.width + g.size_x:
+                mario_with_monster(self.mario, g)
+        for k in self.all_monster.koopagreen.list:
+            if self.camera.start_x - k.size_x < k.x < self.camera.start_x + self.camera.width + k.size_x:
+                mario_with_monster(self.mario, k)
+
 
