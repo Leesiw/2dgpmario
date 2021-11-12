@@ -13,10 +13,10 @@ class Stage:
             self.mario = Mario(600, 50)
             all_goomba = All_goomba(3)
             all_goomba.list = [Goomba(100, 50, 200), Goomba(200, 50, 300), Goomba(300, 50, 400)]
-            all_koopagreen = All_koopagreen(3)
-            all_koopagreen.list = [KoopaGreen(400, 50, 500), KoopaGreen(500, 50, 600), KoopaGreen(600, 50, 700)]
+            all_koopagreen = All_koopagreen(2)
+            all_koopagreen.list = [KoopaGreen(400, 50, 500), KoopaGreen(500, 50, 600)]
             self.all_monster = All_monster(all_koopagreen, all_goomba, self.camera)
-            self.map = Map(1600, 600, [[0] * 30 for _ in range(80)], 80, 30)
+            self.map = Map(5000, 600, [[0] * 30 for _ in range(250)], 250, 30)
 
             for i in range(0, 39):
                 self.map.tile_board[i][1] = 1
@@ -27,9 +27,14 @@ class Stage:
                 for j in range(0, i - 37):
                     self.map.tile_board[i][j] = 2
             for i in range(45, 51):
-                self.map.tile_board[i][-i + 52] = 4
-                for j in range(0, -i + 52):
+                self.map.tile_board[i][7] = 1
+
+            for i in range(51, 58):
+                self.map.tile_board[i][-i + 58] = 4
+                for j in range(0, -i + 58):
                     self.map.tile_board[i][j] = 2
+            for i in range(58, 70):
+                self.map.tile_board[i][0] = 1
 
         elif id == 2:
             pass
@@ -38,21 +43,21 @@ class Stage:
         x_first = self.camera.x - (self.camera.width / 2)  # // map.tile_width - 1
         y_first = self.camera.y - (self.camera.height / 2)  # // map.tile_height - 2
 
-        x_tile_first = int(x_first // 20);
-        x_tile_last = int(x_tile_first + (self.camera.width // 20) + 2)
-        y_tile_first = int(y_first // 20);
-        y_tile_last = int(y_tile_first + (self.camera.height // 20))
+        x_tile_first = int(x_first // self.map.tile_width)
+        x_tile_last = int(x_tile_first + (self.camera.width // self.map.tile_width) + 2)
+        y_tile_first = int(y_first // self.map.tile_height)
+        y_tile_last = int(y_tile_first + (self.camera.height // self.map.tile_height))
 
         for i in range(x_tile_first, x_tile_last):
             for j in range(y_tile_first, y_tile_last):
                 if self.map.tile_board[i][j] == 1:  # grass
-                    self.map.image.clip_draw(2, 1282, 90, 30, i * 20 - x_first, j * 20 - y_first, 20, 20)
+                    self.map.image.clip_draw(2, 1282, 90, 30, i * self.map.tile_width - x_first, j * self.map.tile_height - y_first, self.map.tile_width, self.map.tile_height)
                 elif self.map.tile_board[i][j] == 2:  # earth
-                    self.map.image.clip_draw(2, 1265, 90, 30, i * 20 - x_first, j * 20 - y_first, 20, 20)
+                    self.map.image.clip_draw(2, 1265, 90, 30, i * self.map.tile_width - x_first, j * self.map.tile_height - y_first, self.map.tile_width, self.map.tile_height)
                 elif self.map.tile_board[i][j] == 3:  # slopping ground right up
-                    self.map.image.clip_draw(0, 0, 81, 71, i * 20 - x_first, j * 20 - y_first, 20, 20)
+                    self.map.image.clip_draw(0, 0, 81, 71, i * self.map.tile_width - x_first, j * self.map.tile_height - y_first, self.map.tile_width, self.map.tile_height)
                 elif self.map.tile_board[i][j] == 4:  # slopping ground right up
-                    self.map.image.clip_draw(81, 0, 81, 71, i * 20 - x_first, j * 20 - y_first, 20, 20)
+                    self.map.image.clip_draw(81, 0, 81, 71, i * self.map.tile_width - x_first, j * self.map.tile_height - y_first, self.map.tile_width, self.map.tile_height)
 
     def update(self):
         update_camera(self.camera, self.map, self.mario)
@@ -67,10 +72,14 @@ class Stage:
         self.all_monster.camera = self.camera
 
         for g in self.all_monster.goomba.list:
-            if self.camera.start_x - g.size_x < g.x < self.camera.start_x + self.camera.width + g.size_x:
-                mario_with_monster(self.mario, g)
+            if g.state == ALIVE:
+                if self.camera.start_x - g.size_x < g.x < self.camera.start_x + self.camera.width + g.size_x:
+                    mario_with_monster(self.mario, g)
+                    mario_with_goomba(self.mario, g)
         for k in self.all_monster.koopagreen.list:
-            if self.camera.start_x - k.size_x < k.x < self.camera.start_x + self.camera.width + k.size_x:
-                mario_with_monster(self.mario, k)
+            if k.state == ALIVE:
+                if self.camera.start_x - k.size_x < k.x < self.camera.start_x + self.camera.width + k.size_x:
+                    mario_with_monster(self.mario, k)
+
 
 

@@ -19,9 +19,9 @@ class Map:
 
 
 def ground_collide(character, map): # 캐릭터와 바닥 충돌 체크
-    # if character.y < 0:
-    #     character.die = 'die'
-    # else:
+    if character.y < 0:
+         character.state = 3 # DIE
+    else:
         x = int(character.x // map.tile_width)
         y = int((character.y - character.size_y // 2) // map.tile_height)
 
@@ -35,12 +35,13 @@ def ground_collide(character, map): # 캐릭터와 바닥 충돌 체크
 
         if map.tile_board[x][y] == 0:
             if not character.jump_bool:
-                # and (character.x + character.size_x / 2) % map.tile_width != 0
                 character.jump_bool = True
                 character.jump_power = 0
         elif map.tile_board[x][y] == 1: # flat ground
             if character.jump_bool and character.jump_power < 0:
                 character.jump_bool = False
+                character.y = y * map.tile_height + character.size_y // 2 + 10
+            if not character.jump_bool:
                 character.y = y * map.tile_height + character.size_y // 2 + 10
         elif map.tile_board[x][y] == 3: # slopping ground right up
             if not character.jump_bool:

@@ -18,8 +18,8 @@ def enter():
 
     game_world.add_object(stage.bk_ground, 0)
     game_world.add_object(stage, 1)
-    game_world.add_object(stage.mario, 1)
     game_world.add_object(stage.all_monster, 1)
+    game_world.add_object(stage.mario, 1)
 
 def exit():
     game_world.clear()
@@ -49,8 +49,14 @@ def draw():
 
 
 def update():
+    if stage.mario.state == DIE and stage.mario.frame > 5:
+        game_framework.change_state(gameover_state)
+
     for game_object in game_world.all_objects():
         game_object.update()
+
+
+
     # if mario.die != 'die_ani':
     #     mario_with_monster(mario, map.all_goomba, map)
     #     mario_with_monster(mario, map.all_koopagreen, map)

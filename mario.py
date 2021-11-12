@@ -1,6 +1,3 @@
-# from animation import *
-# from camera import *
-# from map import *
 from pico2d import *
 import game_framework
 
@@ -10,7 +7,7 @@ RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, SPACE, DEBUG_KEY = range(6)
 
 event_name = ['RIGHT_DOWN', 'LEFT_DOWN', 'RIGHT_UP', 'LEFT_UP', 'SPACE']
 
-SMALL, BIG, FIRE = range(3)
+SMALL, BIG, FIRE, DIE = range(4)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_d) : DEBUG_KEY,
@@ -68,7 +65,7 @@ class RunState:
         mario.frame = (mario.frame + mario.action_speed * game_framework.frame_time) % 12
 
         mario.x += mario.velocity * mario.speed * game_framework.frame_time
-        mario.x = clamp(25, mario.x, 1600 - 25)
+        # mario.x = clamp(25, mario.x, 1600 - 25)
 
     def draw(mario):
         if mario.velocity == 1:
@@ -78,11 +75,24 @@ class RunState:
             mario.image.clip_draw(3 + int(mario.frame) * 20, 168, 20, 24, mario.x - mario.camera_x, mario.y - mario.camera_y,
                                   mario.size_x, mario.size_y)
 
+class DieState:
+    def enter(mario, event):
+        mario.state = DIE
 
+    def exit(mario, event):
+        pass
+
+    def do(mario):
+        mario.frame = (mario.frame + mario.action_speed / 2 * game_framework.frame_time)
+
+    def draw(mario):
+        mario.image.clip_draw(50 + int(mario.frame) * 25, 27, 25, 24, mario.x - mario.camera_x,mario.y - mario.camera_y
+                              , mario.size_x, mario.size_y)
 
 next_state_table = {
     IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState, SPACE: IdleState},
-    RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState, SPACE: RunState}
+    RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState, SPACE: RunState},
+    DieState: {RIGHT_UP: DieState, LEFT_UP: DieState, LEFT_DOWN: DieState, RIGHT_DOWN: DieState, SPACE: DieState}
 }
 
 class Mario:
@@ -114,6 +124,11 @@ class Mario:
         self.event_que.insert(0, event)
 
     def update(self):
+        if self.state == DIE and not self.cur_state == DieState:
+            self.state = DIE
+            self.cur_state = DieState
+            self.frame = 0
+            self.cur_state.enter(self, None)
         self.cur_state.do(self)
         if len(self.event_que) > 0:
             event = self.event_que.pop()
@@ -131,10 +146,6 @@ class Mario:
             self.jump_power -= self.g * current_time
             self.y += self.jump_power * game_framework.frame_time
 
-        if self.y < 50: # 점프 테스트 용 맵과의 충돌처리로 변경
-            self.y = 50
-            self.jump_bool = False
-
     def draw(self):
         if self.jump_bool:
             if self.dir == 1:
@@ -144,8 +155,8 @@ class Mario:
         else:
             self.cur_state.draw(self)
         # debug_print('Velocity :' + str(self.velocity) + '  Dir:' + str(self.dir))
-        debug_print(
-            'velocity : ' + str(self.velocity) + ' dir : ' + str(self.dir) + 'state : ' + self.cur_state.__name__)
+        # debug_print(
+            # 'velocity : ' + str(self.velocity) + ' dir : ' + str(self.dir) + ' state : ' + self.cur_state.__name__ + ' frame : ' + str(self.frame))
 
     def handle_event(self, event):
         if (event.type, event.key) in key_event_table:

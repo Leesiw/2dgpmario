@@ -4,6 +4,8 @@ import game_framework
 history = []
 SEE_MARIO, MISS_MARIO, DEBUG_KEY = range(3)
 
+ALIVE, DIE = 0, 3
+
 event_name = ['SEE_MARIO', 'MISS_MARIO']
 
 class RunState:
@@ -51,10 +53,23 @@ class DashState:
         else:
             goomba.image.clip_draw(0, 867 - 31 * int(goomba.frame), 30, 30, goomba.x - camera_x, goomba.y - camera_y, 40, 40)
 
+class DieState:
+    def enter(goomba, event):
+        pass
+
+    def exit(goomba, event):
+        pass
+
+    def do(goomba):
+        goomba.frame = (goomba.frame + goomba.action_speed / 4 * game_framework.frame_time)
+
+    def draw(goomba, camera_x, camera_y):
+        goomba.image.clip_draw(5, 614 - 31 * int(goomba.frame), 30, 30, goomba.x - camera_x, goomba.y - camera_y, 40, 40)
 
 next_state_table = {
     DashState: {SEE_MARIO: DashState, MISS_MARIO: RunState},
-    RunState: {SEE_MARIO: DashState, MISS_MARIO: RunState}
+    RunState: {SEE_MARIO: DashState, MISS_MARIO: RunState},
+    DieState: {SEE_MARIO: DieState, MISS_MARIO: DieState}
 }
 
 class Goomba:
@@ -69,6 +84,7 @@ class Goomba:
         self.frame = 0
         self.velocity = 1
         self.speed = 0
+        self.state = ALIVE
         self.action_speed = 1.0 / 0.05
         self.event_que = []
         self.cur_state = RunState
@@ -81,6 +97,9 @@ class Goomba:
         self.event_que.insert(0, event)
 
     def update(self):
+        if self.state == DIE:
+            self.cur_state = DieState
+            self.cur_state.enter(self, None)
         self.cur_state.do(self)
         if len(self.event_que) > 0:
             event = self.event_que.pop()
@@ -92,7 +111,6 @@ class Goomba:
                 print('cur state : ', self.cur_state.__name__, 'event : ', event_name[event])
                 exit(-1)
             self.cur_state.enter(self, event)
-
     def draw(self, camera_x, camera_y):
         self.cur_state.draw(self, camera_x, camera_y)
 
@@ -105,7 +123,10 @@ class All_goomba:
 
     def update(self):
         for i in self.list:
-            i.update()
+            if i.state == DIE and i.frame > 2:
+                self.list.remove(i)
+            else:
+                i.update()
 
 
 

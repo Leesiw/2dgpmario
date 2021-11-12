@@ -4,7 +4,7 @@ import game_framework
 history = []
 
 DEBUG_KEY = range(1)
-
+ALIVE, DIE = 0, 3
 event_name = []
 
 class RunState:
@@ -33,6 +33,20 @@ class RunState:
                                        koopagreen.x - camera_x, koopagreen.y - camera_y, 40, 40)
 
 
+class DieState:
+    def enter(koopagreen, event):
+        pass
+
+    def exit(koopagreen, event):
+        pass
+
+    def do(koopagreen):
+        koopagreen.frame = (koopagreen.frame + koopagreen.action_speed / 4 * game_framework.frame_time)
+
+    def draw(koopagreen, camera_x, camera_y):
+        koopagreen.image.clip_draw(0, 693 + 32 * int(koopagreen.frame), 25, 26,
+                                   koopagreen.x - camera_x, koopagreen.y - camera_y, 50, 50)
+
 next_state_table = {
     RunState: {}
 }
@@ -54,6 +68,7 @@ class KoopaGreen:
         self.event_que = []
         self.cur_state = RunState
         self.cur_state.enter(self, None)
+        self.state = ALIVE
 
         if KoopaGreen.image == None:
             KoopaGreen.image = load_image('resource/koopagreen.png')
@@ -62,17 +77,20 @@ class KoopaGreen:
         self.event_que.insert(0, event)
 
     def update(self):
+        if self.state == DIE:
+            self.cur_state = DieState
+            self.cur_state.enter(self, None)
         self.cur_state.do(self)
-        if len(self.event_que) > 0:
-            event = self.event_que.pop()
-            try:
-                history.append((self.cur_state.__name__, event_name[event]))
-                self.cur_state.exit(self, event)
-                self.cur_state = next_state_table[self.cur_state][event]
-            except:
-                print('cur state : ', self.cur_state.__name__, 'event : ', event_name[event])
-                exit(-1)
-            self.cur_state.enter(self, event)
+        # if len(self.event_que) > 0:
+        #     event = self.event_que.pop()
+        #     try:
+        #         history.append((self.cur_state.__name__, event_name[event]))
+        #         self.cur_state.exit(self, event)
+        #         self.cur_state = next_state_table[self.cur_state][event]
+        #     except:
+        #         print('cur state : ', self.cur_state.__name__, 'event : ', event_name[event])
+        #         exit(-1)
+        #     self.cur_state.enter(self, event)
 
     def draw(self, camera_x, camera_y):
         self.cur_state.draw(self, camera_x, camera_y)
@@ -90,6 +108,9 @@ class All_koopagreen:
 
     def update(self):
         for i in self.list:
-            i.update()
+            if i.state == DIE and i.frame > 1:
+                self.list.remove(i)
+            else:
+                i.update()
 
 
