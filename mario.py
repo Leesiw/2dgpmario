@@ -9,6 +9,8 @@ RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, SPACE, DEBUG_KEY = range(6)
 
 event_name = ['RIGHT_DOWN', 'LEFT_DOWN', 'RIGHT_UP', 'LEFT_UP', 'SPACE']
 
+SMALL, BIG, FIRE = range(3)
+
 key_event_table = {
     (SDL_KEYDOWN, SDLK_d) : DEBUG_KEY,
 
@@ -39,9 +41,11 @@ class IdleState:
 
     def draw(mario):
         if mario.dir == 1:
-            mario.image.clip_draw(2 + mario.frame * 20, 192, 20, 23, mario.x - mario.camera_x, mario.y - mario.camera_y, 40, 40)
+            mario.image.clip_draw(2 + mario.frame * 20, 192, 20, 23, mario.x - mario.camera_x, mario.y - mario.camera_y,
+                                  mario.size_x, mario.size_y)
         else:
-            mario.image.clip_draw(2 + mario.frame * 20, 215, 18, 24, mario.x - mario.camera_x, mario.y - mario.camera_y, 40, 40)
+            mario.image.clip_draw(2 + mario.frame * 20, 215, 18, 24, mario.x - mario.camera_x, mario.y - mario.camera_y,
+                                  mario.size_x, mario.size_y)
 
 class RunState:
     def enter(mario, event):
@@ -70,9 +74,11 @@ class RunState:
 
     def draw(mario):
         if mario.velocity == 1:
-            mario.image.clip_draw(2 + mario.frame * 20, 143, 20, 24, mario.x - mario.camera_x, mario.y - mario.camera_y, 40, 40)
+            mario.image.clip_draw(2 + mario.frame * 20, 143, 20, 24, mario.x - mario.camera_x, mario.y - mario.camera_y,
+                                  mario.size_x, mario.size_y)
         else:
-            mario.image.clip_draw(3 + mario.frame * 20, 168, 20, 24, mario.x - mario.camera_x, mario.y - mario.camera_y, 40, 40)
+            mario.image.clip_draw(3 + mario.frame * 20, 168, 20, 24, mario.x - mario.camera_x, mario.y - mario.camera_y,
+                                  mario.size_x, mario.size_y)
 
 
 
@@ -97,6 +103,7 @@ class Mario:
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
         self.camera_x, self.camera_y = 0, 0
+        self.state = SMALL
         if Mario.image == None:
             Mario.image = load_image('resource/mario.png.gif')
 
@@ -127,10 +134,10 @@ class Mario:
 
     def draw(self):
         if self.jump_bool:
-            if self.velocity == 1:
-                self.image.clip_draw(144, 114, 18, 25, self.x - self.camera_x, self.y - self.camera_y, 40, 40)
+            if self.dir == 1:
+                self.image.clip_draw(144, 114, 18, 25, self.x - self.camera_x, self.y - self.camera_y, self.size_x, self.size_y)
             else:
-                self.image.clip_draw(120, 114, 20, 24, self.x - self.camera_x, self.y - self.camera_y, 40, 40)
+                self.image.clip_draw(120, 114, 20, 24, self.x - self.camera_x, self.y - self.camera_y, self.size_x, self.size_y)
         else:
             self.cur_state.draw(self)
         # debug_print('Velocity :' + str(self.velocity) + '  Dir:' + str(self.dir))
@@ -148,7 +155,7 @@ class Mario:
     def jump_start(self):
         if not self.jump_bool:
             self.jump_bool = True
-            self.jump_power = 20
+            self.jump_power = 25
 
     def fire_ball(self):
         pass
