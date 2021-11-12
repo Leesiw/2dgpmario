@@ -22,11 +22,11 @@ class RunState:
         goomba.x += goomba.velocity * goomba.speed
         goomba.x = clamp(25, goomba.x, 1600 - 25)
 
-    def draw(goomba):
+    def draw(goomba, camera_x, camera_y):
         if goomba.velocity == 1:
-            goomba.image.clip_draw(50, 867 - 31 * goomba.frame, 30, 30, goomba.x - goomba.camera_x, goomba.y - goomba.camera_y, 40, 40)
+            goomba.image.clip_draw(50, 867 - 31 * goomba.frame, 30, 30, goomba.x - camera_x, goomba.y - camera_y, 40, 40)
         else:
-            goomba.image.clip_draw(0, 867 - 31 * goomba.frame, 30, 30, goomba.x - goomba.camera_x, goomba.y - goomba.camera_y, 40, 40)
+            goomba.image.clip_draw(0, 867 - 31 * goomba.frame, 30, 30, goomba.x - camera_x, goomba.y - camera_y, 40, 40)
 
 
 class DashState:
@@ -42,11 +42,11 @@ class DashState:
         goomba.x += goomba.velocity * goomba.speed
         goomba.x = clamp(25, goomba.x, 1600 - 25)
 
-    def draw(goomba):
+    def draw(goomba, camera_x, camera_y):
         if goomba.velocity == 1:
-            goomba.image.clip_draw(50, 867 - 31 * goomba.frame, 30, 30, goomba.x - goomba.camera_x, goomba.y - goomba.camera_y, 40, 40)
+            goomba.image.clip_draw(50, 867 - 31 * goomba.frame, 30, 30, goomba.x - camera_x, goomba.y - camera_y, 40, 40)
         else:
-            goomba.image.clip_draw(0, 867 - 31 * goomba.frame, 30, 30, goomba.x - goomba.camera_x, goomba.y - goomba.camera_y, 40, 40)
+            goomba.image.clip_draw(0, 867 - 31 * goomba.frame, 30, 30, goomba.x - camera_x, goomba.y - camera_y, 40, 40)
 
 
 next_state_table = {
@@ -69,7 +69,6 @@ class Goomba:
         self.event_que = []
         self.cur_state = RunState
         self.cur_state.enter(self, None)
-        self.camera_x, self.camera_y = 0, 0
 
         if Goomba.image == None:
             Goomba.image = load_image('resource/goomba.png')
@@ -90,8 +89,8 @@ class Goomba:
                 exit(-1)
             self.cur_state.enter(self, event)
 
-    def draw(self):
-        self.cur_state.draw(self)
+    def draw(self, camera_x, camera_y):
+        self.cur_state.draw(self, camera_x, camera_y)
         # debug_print('Velocity :' + str(self.velocity) + '  Dir:' + str(self.dir))
         # debug_print(
         #     'velocity : ' + str(self.velocity) + ' dir : ' + str(self.dir) + 'state : ' + self.cur_state.__name__)
@@ -99,7 +98,6 @@ class Goomba:
 
 class All_goomba:
     list = None
-
     def __init__(self, num):
         self.num = num
         self.list = []
@@ -108,8 +106,6 @@ class All_goomba:
         for i in self.list:
             i.update()
 
-    def draw(self):
-        for i in self.list:
-            i.draw()
+
 
 

@@ -23,13 +23,13 @@ class RunState:
         koopagreen.x += koopagreen.velocity * koopagreen.speed
         koopagreen.x = clamp(25, koopagreen.x, 1600 - 25)
 
-    def draw(koopagreen):
+    def draw(koopagreen, camera_x, camera_y):
         if koopagreen.velocity == 1:
             koopagreen.image.clip_draw(48, 1328 - 32 * koopagreen.frame, 16, 32,
-                                       koopagreen.x - koopagreen.camera_x, koopagreen.y - koopagreen.camera_y, 40, 40)
+                                       koopagreen.x - camera_x, koopagreen.y - camera_y, 40, 40)
         else:
             koopagreen.image.clip_draw(0, 1328 - 32 * koopagreen.frame, 16, 32,
-                                       koopagreen.x - koopagreen.camera_x, koopagreen.y - koopagreen.camera_y, 40, 40)
+                                       koopagreen.x - camera_x, koopagreen.y - camera_y, 40, 40)
 
 
 next_state_table = {
@@ -51,7 +51,6 @@ class KoopaGreen:
         self.event_que = []
         self.cur_state = RunState
         self.cur_state.enter(self, None)
-        self.camera_x, self.camera_y = 0, 0
 
         if KoopaGreen.image == None:
             KoopaGreen.image = load_image('resource/koopagreen.png')
@@ -72,8 +71,8 @@ class KoopaGreen:
                 exit(-1)
             self.cur_state.enter(self, event)
 
-    def draw(self):
-        self.cur_state.draw(self)
+    def draw(self, camera_x, camera_y):
+        self.cur_state.draw(self, camera_x, camera_y)
         # debug_print('Velocity :' + str(self.velocity) + '  Dir:' + str(self.dir))
         # debug_print(
         #     'velocity : ' + str(self.velocity) + ' dir : ' + str(self.dir) + 'state : ' + self.cur_state.__name__)
@@ -90,7 +89,4 @@ class All_koopagreen:
         for i in self.list:
             i.update()
 
-    def draw(self):
-        for i in self.list:
-            i.draw()
 

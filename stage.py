@@ -10,10 +10,11 @@ class Stage:
 
         if id == 1: # 테스트용 맵
             self.mario = Mario(600, 50)
-            self.all_goomba = All_goomba(3)
-            self.all_goomba.list = [Goomba(100, 50, 200), Goomba(200, 50, 300), Goomba(300, 50, 400)]
-            self.all_koopagreen = All_koopagreen(3)
-            self.all_koopagreen.list = [KoopaGreen(400, 50, 500), KoopaGreen(500, 50, 600), KoopaGreen(600, 50, 700)]
+            all_goomba = All_goomba(3)
+            all_goomba.list = [Goomba(100, 50, 200), Goomba(200, 50, 300), Goomba(300, 50, 400)]
+            all_koopagreen = All_koopagreen(3)
+            all_koopagreen.list = [KoopaGreen(400, 50, 500), KoopaGreen(500, 50, 600), KoopaGreen(600, 50, 700)]
+            self.all_monster = All_monster(all_koopagreen, all_goomba, self.camera)
             self.map = Map(1600, 600, [[0] * 30 for _ in range(80)], 80, 30)
 
             for i in range(0, 39):
@@ -52,15 +53,11 @@ class Stage:
         update_camera(self.camera, self.map, self.mario)
 
         ground_collide(self.mario, self.map)
-        for g in self.all_goomba.list:
-            ground_collide(g, self.map)
-        for k in self.all_koopagreen.list:
-            ground_collide(k, self.map)
+        # for g in self.all_monster.goomba.list:
+        #     ground_collide(g, self.map)
+        # for k in self.all_monster.koopagreen.list:
+        #     ground_collide(k, self.map)
 
         character_camera_update(self.mario, self.camera)
-        for g in self.all_goomba.list:
-            character_camera_update(g, self.camera)
-        for k in self.all_koopagreen.list:
-            character_camera_update(k, self.camera)
-
+        self.all_monster.camera = self.camera
 

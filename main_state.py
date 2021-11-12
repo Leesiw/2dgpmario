@@ -19,8 +19,7 @@ def enter():
     game_world.add_object(stage.bk_ground, 0)
     game_world.add_object(stage, 1)
     game_world.add_object(stage.mario, 1)
-    game_world.add_object(stage.all_goomba, 1)
-    game_world.add_object(stage.all_koopagreen, 1)
+    game_world.add_object(stage.all_monster, 1)
 
 def exit():
     game_world.clear()
