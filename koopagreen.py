@@ -1,4 +1,5 @@
 from pico2d import *
+import game_framework
 
 history = []
 
@@ -8,27 +9,27 @@ event_name = []
 
 class RunState:
     def enter(koopagreen, event):
-        koopagreen.speed = 1
+        pass
 
     def exit(koopagreen, event):
         pass
 
     def do(koopagreen):
-        koopagreen.frame = (koopagreen.frame + 1) % 8
+        koopagreen.frame = (koopagreen.frame + koopagreen.action_speed * game_framework.frame_time) % 16
         if koopagreen.x > koopagreen.next_x:
             koopagreen.velocity = -1
         elif koopagreen.x < koopagreen.start_x:
             koopagreen.velocity = 1
 
-        koopagreen.x += koopagreen.velocity * koopagreen.speed
+        koopagreen.x += koopagreen.velocity * koopagreen.speed * game_framework.frame_time
         koopagreen.x = clamp(25, koopagreen.x, 1600 - 25)
 
     def draw(koopagreen, camera_x, camera_y):
         if koopagreen.velocity == 1:
-            koopagreen.image.clip_draw(48, 1328 - 32 * koopagreen.frame, 16, 32,
+            koopagreen.image.clip_draw(48, 1328 - 32 * int(koopagreen.frame), 16, 32,
                                        koopagreen.x - camera_x, koopagreen.y - camera_y, 40, 40)
         else:
-            koopagreen.image.clip_draw(0, 1328 - 32 * koopagreen.frame, 16, 32,
+            koopagreen.image.clip_draw(0, 1328 - 32 * int(koopagreen.frame), 16, 32,
                                        koopagreen.x - camera_x, koopagreen.y - camera_y, 40, 40)
 
 
@@ -47,7 +48,9 @@ class KoopaGreen:
         self.next_x = next_x
         self.frame = 0
         self.velocity = 1
-        self.speed = 0
+        # 10pixel = 25cm, 12km/hour
+        self.speed = (12.0 * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
+        self.action_speed = 1.0 / 0.05
         self.event_que = []
         self.cur_state = RunState
         self.cur_state.enter(self, None)

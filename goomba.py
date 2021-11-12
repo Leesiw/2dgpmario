@@ -1,4 +1,5 @@
 from pico2d import *
+import game_framework
 
 history = []
 SEE_MARIO, MISS_MARIO, DEBUG_KEY = range(3)
@@ -7,46 +8,48 @@ event_name = ['SEE_MARIO', 'MISS_MARIO']
 
 class RunState:
     def enter(goomba, event):
-        goomba.speed = 1
+        # 10pixel = 25cm, 10km/hour
+        goomba.speed = (10.0 * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
 
     def exit(goomba, event):
         pass
 
     def do(goomba):
-        goomba.frame = (goomba.frame + 1) % 8
+        goomba.frame = (goomba.frame + goomba.action_speed * game_framework.frame_time) % 8
         if goomba.x > goomba.next_x:
             goomba.velocity = -1
         elif goomba.x < goomba.start_x:
             goomba.velocity = 1
 
-        goomba.x += goomba.velocity * goomba.speed
+        goomba.x += goomba.velocity * goomba.speed * game_framework.frame_time
         goomba.x = clamp(25, goomba.x, 1600 - 25)
 
     def draw(goomba, camera_x, camera_y):
         if goomba.velocity == 1:
-            goomba.image.clip_draw(50, 867 - 31 * goomba.frame, 30, 30, goomba.x - camera_x, goomba.y - camera_y, 40, 40)
+            goomba.image.clip_draw(50, 867 - 31 * int(goomba.frame), 30, 30, goomba.x - camera_x, goomba.y - camera_y, 40, 40)
         else:
-            goomba.image.clip_draw(0, 867 - 31 * goomba.frame, 30, 30, goomba.x - camera_x, goomba.y - camera_y, 40, 40)
+            goomba.image.clip_draw(0, 867 - 31 * int(goomba.frame), 30, 30, goomba.x - camera_x, goomba.y - camera_y, 40, 40)
 
 
 class DashState:
     def enter(goomba, event):
-        goomba.speed = 5
+        # 10pixel = 25cm, 17km/hour
+        goomba.speed = (17.0 * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
         goomba.dir = goomba.velocity
 
     def exit(goomba, event):
         pass
     def do(goomba):
-        goomba.frame = (goomba.frame + 1) % 8
+        goomba.frame = (goomba.frame + goomba.action_speed * game_framework.frame_time) % 8
 
-        goomba.x += goomba.velocity * goomba.speed
+        goomba.x += goomba.velocity * goomba.speed * game_framework.frame_time
         goomba.x = clamp(25, goomba.x, 1600 - 25)
 
     def draw(goomba, camera_x, camera_y):
         if goomba.velocity == 1:
-            goomba.image.clip_draw(50, 867 - 31 * goomba.frame, 30, 30, goomba.x - camera_x, goomba.y - camera_y, 40, 40)
+            goomba.image.clip_draw(50, 867 - 31 * int(goomba.frame), 30, 30, goomba.x - camera_x, goomba.y - camera_y, 40, 40)
         else:
-            goomba.image.clip_draw(0, 867 - 31 * goomba.frame, 30, 30, goomba.x - camera_x, goomba.y - camera_y, 40, 40)
+            goomba.image.clip_draw(0, 867 - 31 * int(goomba.frame), 30, 30, goomba.x - camera_x, goomba.y - camera_y, 40, 40)
 
 
 next_state_table = {
@@ -66,6 +69,7 @@ class Goomba:
         self.frame = 0
         self.velocity = 1
         self.speed = 0
+        self.action_speed = 1.0 / 0.05
         self.event_que = []
         self.cur_state = RunState
         self.cur_state.enter(self, None)
@@ -91,9 +95,6 @@ class Goomba:
 
     def draw(self, camera_x, camera_y):
         self.cur_state.draw(self, camera_x, camera_y)
-        # debug_print('Velocity :' + str(self.velocity) + '  Dir:' + str(self.dir))
-        # debug_print(
-        #     'velocity : ' + str(self.velocity) + ' dir : ' + str(self.dir) + 'state : ' + self.cur_state.__name__)
 
 
 class All_goomba:

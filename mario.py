@@ -2,6 +2,7 @@
 # from camera import *
 # from map import *
 from pico2d import *
+import game_framework
 
 history = []
 
@@ -37,14 +38,14 @@ class IdleState:
             mario.jump_start()
 
     def do(mario):
-        mario.frame = (mario.frame + 1) % 9
+        mario.frame = (mario.frame + mario.action_speed * game_framework.frame_time) % 9
 
     def draw(mario):
         if mario.dir == 1:
-            mario.image.clip_draw(2 + mario.frame * 20, 192, 20, 23, mario.x - mario.camera_x, mario.y - mario.camera_y,
+            mario.image.clip_draw(2 + int(mario.frame) * 20, 192, 20, 23, mario.x - mario.camera_x, mario.y - mario.camera_y,
                                   mario.size_x, mario.size_y)
         else:
-            mario.image.clip_draw(2 + mario.frame * 20, 215, 18, 24, mario.x - mario.camera_x, mario.y - mario.camera_y,
+            mario.image.clip_draw(2 + int(mario.frame) * 20, 215, 18, 24, mario.x - mario.camera_x, mario.y - mario.camera_y,
                                   mario.size_x, mario.size_y)
 
 class RunState:
@@ -60,24 +61,21 @@ class RunState:
         mario.dir = mario.velocity
 
     def exit(mario, event):
-        mario.speed = 0
         if event == SPACE:
             mario.jump_start()
 
     def do(mario):
-        mario.frame = (mario.frame + 1) % 12
+        mario.frame = (mario.frame + mario.action_speed * game_framework.frame_time) % 12
 
-        if mario.speed < 5:
-            mario.speed += 0.5
-        mario.x += mario.velocity * mario.speed
+        mario.x += mario.velocity * mario.speed * game_framework.frame_time
         mario.x = clamp(25, mario.x, 1600 - 25)
 
     def draw(mario):
         if mario.velocity == 1:
-            mario.image.clip_draw(2 + mario.frame * 20, 143, 20, 24, mario.x - mario.camera_x, mario.y - mario.camera_y,
+            mario.image.clip_draw(2 + int(mario.frame) * 20, 143, 20, 24, mario.x - mario.camera_x, mario.y - mario.camera_y,
                                   mario.size_x, mario.size_y)
         else:
-            mario.image.clip_draw(3 + mario.frame * 20, 168, 20, 24, mario.x - mario.camera_x, mario.y - mario.camera_y,
+            mario.image.clip_draw(3 + int(mario.frame) * 20, 168, 20, 24, mario.x - mario.camera_x, mario.y - mario.camera_y,
                                   mario.size_x, mario.size_y)
 
 
@@ -98,12 +96,17 @@ class Mario:
         self.velocity = 0
         self.jump_bool = False
         self.jump_power = 0
-        self.speed = 0
+        # 10pixel = 25cm, 20km/hour
+        self.speed = (20.0 * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
+        self.action_speed = 1.0 / 0.05
         self.event_que = []
+        self.jump_speed = (100.0 * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
+        self.g = (35.3094 * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
         self.camera_x, self.camera_y = 0, 0
         self.state = SMALL
+        self.time = 0.0
         if Mario.image == None:
             Mario.image = load_image('resource/mario.png.gif')
 
@@ -124,9 +127,9 @@ class Mario:
             self.cur_state.enter(self, event)
 
         if self.jump_bool:
-            if self.jump_power > -10:
-                self.jump_power -= 3
-            self.y += self.jump_power
+            current_time = game_framework.time.time() - self.time
+            self.jump_power -= self.g * current_time
+            self.y += self.jump_power * game_framework.frame_time
 
         if self.y < 50: # 점프 테스트 용 맵과의 충돌처리로 변경
             self.y = 50
@@ -155,7 +158,8 @@ class Mario:
     def jump_start(self):
         if not self.jump_bool:
             self.jump_bool = True
-            self.jump_power = 25
+            self.jump_power = self.jump_speed
+            self.time = game_framework.time.time()
 
     def fire_ball(self):
         pass

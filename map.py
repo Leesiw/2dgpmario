@@ -28,9 +28,9 @@ def ground_collide(character, map): # 캐릭터와 바닥 충돌 체크
         # print(character.y, character.size_y)
         # print(y)
 
-        if map.tile_board[x][y-1] == 3:
+        if map.tile_board[x][y-1] == 3 or map.tile_board[x][y-1] == 4:
             y = y - 1
-        if map.tile_board[x][y+1] == 3:
+        if map.tile_board[x][y+1] == 3 or map.tile_board[x][y+1] == 4:
             y = y + 1
 
         if map.tile_board[x][y] == 0:
@@ -39,11 +39,10 @@ def ground_collide(character, map): # 캐릭터와 바닥 충돌 체크
                 character.jump_bool = True
                 character.jump_power = 0
         elif map.tile_board[x][y] == 1: # flat ground
-            character.y = y * map.tile_height + character.size_y // 2 + 10
-            if character.jump_bool:
+            if character.jump_bool and character.jump_power < 0:
                 character.jump_bool = False
+                character.y = y * map.tile_height + character.size_y // 2 + 10
         elif map.tile_board[x][y] == 3: # slopping ground right up
-            # print(3)
             if not character.jump_bool:
                 character.y = (character.x % map.tile_width) / map.tile_width * map.tile_height + (y+1) * map.tile_height
                 + character.size_y // 2 + 10
@@ -51,19 +50,14 @@ def ground_collide(character, map): # 캐릭터와 바닥 충돌 체크
                 character.jump_bool = False
                 character.y = (character.x % map.tile_width) / map.tile_width * map.tile_height + (y+1) * map.tile_height
                 + character.size_y // 2 + 10
-        #     if not character.jump_bool:
-        #         character.y = (character.x % map.tile_width) / map.tile_width * (y + 1) * map.tile_height + character.size_y // 2 + 10
-        #     elif character.jump_power < 0:
-        #         character.jump_bool = False
-        #         character.y = (character.x % map.tile_width) / map.tile_width * (y + 1) * map.tile_height + character.size_y // 2 + 10
         elif map.tile_board[x][y] == 4: # slopping ground right down
             if not character.jump_bool:
                 character.y = map.tile_width - (character.x % map.tile_width) / map.tile_width * map.tile_height \
-                              + (y + 1)  * map.tile_height + character.size_y // 2 + 10
+                              + (y-1) * map.tile_height + character.size_y // 2 + 10
             elif character.jump_power < 0:
                 character.jump_bool = False
                 character.y = map.tile_width - (character.x % map.tile_width) / map.tile_width * map.tile_height \
-                              + (y + 1) * map.tile_height + character.size_y // 2 + 10
+                              + (y-1) * map.tile_height + character.size_y // 2 + 10
         elif map.tile_board[x][y] == 2:
              character.y = y * map.tile_height + character.size_y // 2 + 10
              if character.jump_bool:

@@ -40,10 +40,6 @@ def draw():
     clear_canvas()
     for game_object in game_world.all_objects():
         game_object.draw()
-    # bk_ground.draw(400, 300, 800, 600)
-    # draw_map(map, camera)
-    # draw_character(map, mario, map.all_goomba, map.all_koopagreen, camera)
-    # delay(0.005)
     update_canvas()
 
 
@@ -53,7 +49,6 @@ def draw():
 
 
 def update():
-    delay(0.01)
     for game_object in game_world.all_objects():
         game_object.update()
     # if mario.die != 'die_ani':
