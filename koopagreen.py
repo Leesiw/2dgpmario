@@ -53,18 +53,18 @@ next_state_table = {
 
 class KoopaGreen:
     image = None
+    speed = (12.0 * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
+    action_speed = 1.0 / 0.05
+    size_x, size_y = 40, 40
 
     def __init__(self, x, y, next_x):
         self.x, self.y = x, y
-        self.size_x, self.size_y = 40, 40
         self.jump_bool = False
         self.start_x = x
         self.next_x = next_x
         self.frame = 0
         self.velocity = 1
         # 10pixel = 25cm, 12km/hour
-        self.speed = (12.0 * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
-        self.action_speed = 1.0 / 0.05
         self.event_que = []
         self.cur_state = RunState
         self.cur_state.enter(self, None)

@@ -19,7 +19,8 @@ class Stage:
             self.all_monster = All_monster(all_koopagreen, all_goomba, self.camera)
             self.map = Map(5000, 600, [[0] * 30 for _ in range(250)], 250, 30)
             self.all_box = All_box(3, self.camera)
-            self.all_box.list = [Box(500, 150, None, None, 1), Box(460, 100, None, None, 2), Box(480, 100, None, None, 0)]
+            self.all_box.list = [Box(500, 150, None, None, 1), Box(460, 130, None, None, 2), Box(480, 130, None, None, 0)]
+            self.all_box.list[1].item_que = [0, 1, 2]
 
             for i in range(0, 39):
                 self.map.tile_board[i][1] = 1

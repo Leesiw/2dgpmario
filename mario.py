@@ -167,7 +167,7 @@ class Mario:
             else:
                 self.add_event(key_event)
 
-    def jump_start(self, jump_power=100.0):
+    def jump_start(self, jump_power=80.0):
         if not self.jump_bool:
             self.jump_bool = True
             self.jump_power = (jump_power * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
