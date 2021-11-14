@@ -5,7 +5,7 @@ history = []
 
 DEBUG_KEY = range(1)
 ALIVE, DIE = 0, 3
-event_name = []
+
 
 class RunState:
     def enter(koopagreen, event):
@@ -81,17 +81,20 @@ class KoopaGreen:
             self.cur_state = DieState
             self.cur_state.enter(self, None)
         self.cur_state.do(self)
-        # if len(self.event_que) > 0:
-        #     event = self.event_que.pop()
-        #     try:
-        #         history.append((self.cur_state.__name__, event_name[event]))
-        #         self.cur_state.exit(self, event)
-        #         self.cur_state = next_state_table[self.cur_state][event]
-        #     except:
-        #         print('cur state : ', self.cur_state.__name__, 'event : ', event_name[event])
-        #         exit(-1)
-        #     self.cur_state.enter(self, event)
-
+        if len(self.event_que) > 0:
+            event = self.event_que.pop()
+            try:
+                history.append((self.cur_state.__name__, event_name[event]))
+                self.cur_state.exit(self, event)
+                self.cur_state = next_state_table[self.cur_state][event]
+            except:
+                print('cur state : ', self.cur_state.__name__, 'event : ', event_name[event])
+                exit(-1)
+            self.cur_state.enter(self, event)
+        if self.jump_bool:
+            current_time = game_framework.time.time() - self.time
+            self.jump_power -= self.g * current_time
+            self.y += self.jump_power * game_framework.frame_time
     def draw(self, camera_x, camera_y):
         self.cur_state.draw(self, camera_x, camera_y)
         # debug_print('Velocity :' + str(self.velocity) + '  Dir:' + str(self.dir))

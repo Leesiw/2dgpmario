@@ -110,7 +110,6 @@ class Mario:
         self.speed = (20.0 * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
         self.action_speed = 1.0 / 0.05
         self.event_que = []
-        self.jump_speed = (100.0 * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
         self.g = (35.3094 * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
@@ -129,6 +128,7 @@ class Mario:
             self.cur_state = DieState
             self.frame = 0
             self.cur_state.enter(self, None)
+            print(self.frame)
         self.cur_state.do(self)
         if len(self.event_que) > 0:
             event = self.event_que.pop()
@@ -166,10 +166,10 @@ class Mario:
             else:
                 self.add_event(key_event)
 
-    def jump_start(self):
+    def jump_start(self, jump_power=80.0):
         if not self.jump_bool:
             self.jump_bool = True
-            self.jump_power = self.jump_speed
+            self.jump_power = (jump_power * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
             self.time = game_framework.time.time()
 
     def fire_ball(self):

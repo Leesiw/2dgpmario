@@ -8,6 +8,8 @@ ALIVE, DIE = 0, 3
 
 event_name = ['SEE_MARIO', 'MISS_MARIO']
 
+G = (35.3094 * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
+
 class RunState:
     def enter(goomba, event):
         # 10pixel = 25cm, 10km/hour
@@ -111,6 +113,10 @@ class Goomba:
                 print('cur state : ', self.cur_state.__name__, 'event : ', event_name[event])
                 exit(-1)
             self.cur_state.enter(self, event)
+        if self.jump_bool:
+            current_time = game_framework.time.time() - self.time
+            self.jump_power -= G * current_time
+            self.y += self.jump_power * game_framework.frame_time
     def draw(self, camera_x, camera_y):
         self.cur_state.draw(self, camera_x, camera_y)
 

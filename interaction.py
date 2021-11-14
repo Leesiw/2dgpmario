@@ -3,14 +3,13 @@ DIE = 3
 
 def mario_with_monster(m, monster):
     if 0 < m.x - monster.x < monster.size_x or 0 < monster.x - m.x < m.size_x:
-        if 0 < monster.y + monster.size_y - m.y < m.size_y / 5:
-            monster.state = DIE # 3
+        if 0 < monster.y + monster.size_y - m.y < m.size_y / 2:
+            monster.state = DIE
             monster.frame = 0
             m.jump_bool = True
-            m.jump_power = (50.0 * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
+            m.jump_power = (20.0 * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
             m.time = time.time()
         elif m.y < monster.y + monster.size_y:
-            # print("m die")
             m.state = DIE
 
 def mario_with_goomba(m, goomba):
