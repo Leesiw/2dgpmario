@@ -32,7 +32,7 @@ def ground_collide(character, map): # 캐릭터와 바닥 충돌 체크
             y = y + 1
 
         if map.tile_board[x][y] == 0:
-            if not character.jump_bool:
+            if not character.jump_bool and not character.on_box:
                 character.time = time.time()
                 character.jump_bool = True
                 character.jump_power = 0

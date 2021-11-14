@@ -3,6 +3,7 @@ from map import *
 from bkground import *
 from character import *
 from interaction import *
+from box import *
 
 class Stage:
     def __init__(self, id):
@@ -12,11 +13,13 @@ class Stage:
         if id == 1: # 테스트용 맵
             self.mario = Mario(600, 50)
             all_goomba = All_goomba(3)
-            all_goomba.list = [Goomba(100, 50, 200), Goomba(200, 50, 300), Goomba(300, 50, 400)]
+            # all_goomba.list = [Goomba(100, 50, 200), Goomba(200, 50, 300), Goomba(300, 50, 400)]
             all_koopagreen = All_koopagreen(2)
-            all_koopagreen.list = [KoopaGreen(400, 50, 500), KoopaGreen(500, 50, 600)]
+            # all_koopagreen.list = [KoopaGreen(400, 50, 500), KoopaGreen(500, 50, 600)]
             self.all_monster = All_monster(all_koopagreen, all_goomba, self.camera)
             self.map = Map(5000, 600, [[0] * 30 for _ in range(250)], 250, 30)
+            self.all_box = All_box(3, self.camera)
+            self.all_box.list = [Box(500, 150, None, None, 1), Box(460, 100, None, None, 2), Box(480, 100, None, None, 0)]
 
             for i in range(0, 39):
                 self.map.tile_board[i][1] = 1
@@ -28,6 +31,8 @@ class Stage:
                     self.map.tile_board[i][j] = 2
             for i in range(45, 51):
                 self.map.tile_board[i][7] = 1
+                for j in range(0, 7):
+                    self.map.tile_board[i][j] = 2
 
             for i in range(51, 58):
                 self.map.tile_board[i][-i + 58] = 4
@@ -65,6 +70,7 @@ class Stage:
     def update(self):
         update_camera(self.camera, self.map, self.mario)
         # 카메라 업데이트
+
         ground_collide(self.mario, self.map)
         for g in self.all_monster.goomba.list:
              ground_collide(g, self.map)
@@ -73,6 +79,8 @@ class Stage:
 
         character_camera_update(self.mario, self.camera)
         self.all_monster.camera = self.camera
+
+        self.all_box.collide(self.mario)
 
         # 마리오와 몬스터 상호작용
         for g in self.all_monster.goomba.list:

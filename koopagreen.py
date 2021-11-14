@@ -69,6 +69,7 @@ class KoopaGreen:
         self.cur_state = RunState
         self.cur_state.enter(self, None)
         self.state = ALIVE
+        self.on_box = False
 
         if KoopaGreen.image == None:
             KoopaGreen.image = load_image('resource/koopagreen.png')

@@ -91,6 +91,7 @@ class Goomba:
         self.event_que = []
         self.cur_state = RunState
         self.cur_state.enter(self, None)
+        self.on_box = False
 
         if Goomba.image == None:
             Goomba.image = load_image('resource/goomba.png')
