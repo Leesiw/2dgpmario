@@ -33,8 +33,11 @@ class Stage:
                 self.map.tile_board[i][-i + 58] = 4
                 for j in range(0, -i + 58):
                     self.map.tile_board[i][j] = 2
-            for i in range(58, 70):
+            for i in range(58, 80):
                 self.map.tile_board[i][0] = 1
+            for i in range(65, 70):
+                self.map.tile_board[i][2] = 1
+                self.map.tile_board[i][1] = 2
 
         elif id == 2:
             pass
@@ -61,7 +64,7 @@ class Stage:
 
     def update(self):
         update_camera(self.camera, self.map, self.mario)
-
+        # 카메라 업데이트
         ground_collide(self.mario, self.map)
         for g in self.all_monster.goomba.list:
              ground_collide(g, self.map)
@@ -71,6 +74,7 @@ class Stage:
         character_camera_update(self.mario, self.camera)
         self.all_monster.camera = self.camera
 
+        # 마리오와 몬스터 상호작용
         for g in self.all_monster.goomba.list:
             if g.state == ALIVE:
                 if self.camera.start_x - g.size_x < g.x < self.camera.start_x + self.camera.width + g.size_x:
