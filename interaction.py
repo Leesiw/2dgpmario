@@ -23,3 +23,19 @@ def mario_with_goomba(m, goomba):
             goomba.add_event(0)     # SEE_MARIO
         else:
             goomba.add_event(1)  # MISS_MARIO
+
+
+def mario_with_item(m, item):
+    if 0 < m.x - item.x < item.size_x or 0 < item.x - item.x < item.size_x:
+        if 0 < item.y + item.size_y - m.y < m.size_y / 2:
+            if item.type == 0:
+                if m.state == 0:
+                    m.state = 1
+                    m.size_y = 60
+            elif item.type == 1:
+                m.life_number += 1
+            elif item.type == 2:
+                m.state = 2
+                m.size_y = 60
+            return True
+
