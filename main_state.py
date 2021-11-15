@@ -11,6 +11,7 @@ name = "MainState"
 # map = None
 # mario = None
 # camera = None
+stage = None
 
 def enter():
     global stage
@@ -19,6 +20,7 @@ def enter():
     game_world.add_object(stage.bk_ground, 0)
     game_world.add_object(stage, 1)
     game_world.add_object(stage.all_box, 1)
+    game_world.add_object(stage.all_item, 1)
     game_world.add_object(stage.all_monster, 1)
     game_world.add_object(stage.mario, 1)
 
@@ -56,6 +58,13 @@ def update():
 
     for game_object in game_world.all_objects():
         game_object.update()
+
+    for b in stage.all_box.list:
+        if b.hit_bool:
+            if not len(b.item_que) == 0:
+                state = b.item_que.pop()
+                item = Item(state, b.x, b.y + b.height, 1)
+                stage.all_item.list.append(item)
 
 
 

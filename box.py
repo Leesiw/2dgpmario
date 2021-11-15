@@ -1,7 +1,10 @@
 from pico2d import *
 import game_framework
-
+from main_state import *
+from item import *
 HIT = 0
+
+import main_state
 
 class Hit:
     def do(block):
@@ -111,18 +114,23 @@ class Box:
         self.cur_state.draw(self, camera_x, camera_y)
 
     def collide(self, character, on_box):
+        self.hit_bool = False
         c_left = character.x - character.size_x / 2
         c_bottom = character.y - character.size_y / 2
         c_right = character.x + character.size_x / 2
         c_top = character.y + character.size_y / 2
+        on_box = False
 
-        if self.left < c_right and c_left < self.right:
-            if self.bottom < c_top < self.y:  # 블록 두드렸을 때
-                character.y = self.bottom - character.size_y / 2
-                character.jump_power = 0.0
-                self.move_state = Hit
-                self.speed = (30.0 * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
-                self.time = game_framework.time.time()
+        if character.name == 'mario':
+            if self.left < c_right and c_left < self.right:
+                if self.bottom < c_top < self.y:  # 블록 두드렸을 때
+                    character.y = self.bottom - character.size_y / 2
+                    character.jump_power = 0.0
+                    self.move_state = Hit
+                    self.hit_bool = True
+                    self.speed = (30.0 * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
+                    self.time = game_framework.time.time()
+
             if self.y < c_bottom <= self.top: # 블록 위에 섰을 때
                 character.y = self.top + character.size_y / 2
                 character.jump_bool = False
@@ -131,8 +139,14 @@ class Box:
         if self.bottom < c_top and c_bottom < self.top:
             if self.left < c_right < self.x:
                 character.x = self.left - character.size_x / 2
-            if self.x < c_left < self.right: # 블록 위에 섰을 때
+                if character.name == 'item':
+                    character.dir = -1
+            if self.x < c_left < self.right:
                 character.x = self.right + character.size_x / 2
+                if character.name == 'item':
+                    character.dir = 1
+
+        character.on_box = on_box
 
 
 
