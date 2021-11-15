@@ -4,6 +4,7 @@ from bkground import *
 from character import *
 from interaction import *
 from box import *
+from item import *
 
 class Stage:
     def __init__(self, id):
@@ -19,8 +20,10 @@ class Stage:
             self.all_monster = All_monster(all_koopagreen, all_goomba, self.camera)
             self.map = Map(5000, 600, [[0] * 30 for _ in range(250)], 250, 30)
             self.all_box = All_box(3, self.camera)
-            self.all_box.list = [Box(500, 150, None, None, 1), Box(460, 130, None, None, 2), Box(480, 130, None, None, 0)]
-            self.all_box.list[1].item_que = [0, 1, 2]
+            self.all_box.list = [Box(500, 150, None, None, 1), Box(480, 130, None, None, 0)]
+            self.all_box.list[1].item_que = [0, 1]
+            self.next_id = 2
+            self.all_item = ItemAll(self.camera)
 
             for i in range(0, 39):
                 self.map.tile_board[i][1] = 1
@@ -77,11 +80,15 @@ class Stage:
              ground_collide(g, self.map)
         for k in self.all_monster.koopagreen.list:
             ground_collide(k, self.map)
+        for i in self.all_item.list:
+            ground_collide(i, self.map)
 
         character_camera_update(self.mario, self.camera)
         self.all_monster.camera = self.camera
 
         self.all_box.collide(self.mario)
+        for i in self.all_item.list:
+            self.all_box.collide(i)
 
         # 마리오와 몬스터 상호작용
         for g in self.all_monster.goomba.list:
@@ -93,6 +100,11 @@ class Stage:
             if k.state == ALIVE:
                 if self.camera.start_x - k.size_x < k.x < self.camera.start_x + self.camera.width + k.size_x:
                     mario_with_monster(self.mario, k)
+
+        for i in self.all_item.list:
+            if self.camera.start_x - i.size_x < i.x < self.camera.start_x + self.camera.width + i.size_x:
+                if mario_with_item(self.mario, i):
+                    self.all_item.list.remove(i)
 
 
 

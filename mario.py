@@ -97,6 +97,7 @@ next_state_table = {
 
 class Mario:
     image = None
+    name = 'mario'
 
     def __init__(self, x, y):
         self.x, self.y = x, y
@@ -110,6 +111,7 @@ class Mario:
         self.speed = (20.0 * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
         self.action_speed = 1.0 / 0.05
         self.event_que = []
+        self.life_number = 3
         self.g = (35.3094 * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
