@@ -14,14 +14,14 @@ class Stage:
         if id == 1: # 테스트용 맵
             self.mario = Mario(600, 50)
             all_goomba = All_goomba(3)
-            # all_goomba.list = [Goomba(100, 50, 200), Goomba(200, 50, 300), Goomba(300, 50, 400)]
+            all_goomba.list = [Goomba(100, 50, 200), Goomba(200, 50, 300), Goomba(300, 50, 400)]
             all_koopagreen = All_koopagreen(2)
             # all_koopagreen.list = [KoopaGreen(400, 50, 500), KoopaGreen(500, 50, 600)]
             self.all_monster = All_monster(all_koopagreen, all_goomba, self.camera)
             self.map = Map(5000, 600, [[0] * 30 for _ in range(250)], 250, 30)
             self.all_box = All_box(3, self.camera)
-            self.all_box.list = [Box(500, 150, None, None, 1), Box(480, 130, None, None, 0)]
-            self.all_box.list[1].item_que = [0, 1]
+            self.all_box.list = [Box(480, 130, None, None, 2)]
+            self.all_box.list[0].item_que = [0, 1]
             self.next_id = 2
             self.all_item = ItemAll(self.camera)
 
@@ -90,16 +90,23 @@ class Stage:
         for i in self.all_item.list:
             self.all_box.collide(i)
 
+
+
         # 마리오와 몬스터 상호작용
-        for g in self.all_monster.goomba.list:
-            if g.state == ALIVE:
-                if self.camera.start_x - g.size_x < g.x < self.camera.start_x + self.camera.width + g.size_x:
-                    mario_with_monster(self.mario, g)
-                    mario_with_goomba(self.mario, g)
-        for k in self.all_monster.koopagreen.list:
-            if k.state == ALIVE:
-                if self.camera.start_x - k.size_x < k.x < self.camera.start_x + self.camera.width + k.size_x:
-                    mario_with_monster(self.mario, k)
+        if self.mario.unbeatable:
+            if time.time() > self.mario.unbeatable_timer + 3.0:
+                self.mario.unbeatable = False
+        else:
+            for g in self.all_monster.goomba.list:
+                if g.state == ALIVE:
+                    if self.camera.start_x - g.size_x < g.x < self.camera.start_x + self.camera.width + g.size_x:
+                        mario_with_monster(self.mario, g)
+                        mario_with_goomba(self.mario, g)
+            for k in self.all_monster.koopagreen.list:
+                if k.state == ALIVE:
+                    if self.camera.start_x - k.size_x < k.x < self.camera.start_x + self.camera.width + k.size_x:
+                        mario_with_monster(self.mario, k)
+
 
         for i in self.all_item.list:
             if self.camera.start_x - i.size_x < i.x < self.camera.start_x + self.camera.width + i.size_x:

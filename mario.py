@@ -107,6 +107,7 @@ class Mario:
         self.velocity = 0
         self.jump_bool = False
         self.jump_power = 0
+        self.jump_power_first = 80.0
         # 10pixel = 25cm, 20km/hour
         self.speed = (20.0 * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
         self.action_speed = 1.0 / 0.05
@@ -117,6 +118,8 @@ class Mario:
         self.cur_state.enter(self, None)
         self.camera_x, self.camera_y = 0, 0
         self.state = SMALL
+        self.unbeatable = False
+        self.unbeatable_timer = 0.0
         self.on_box = False
         self.time = 0.0
         if Mario.image == None:
@@ -169,10 +172,10 @@ class Mario:
             else:
                 self.add_event(key_event)
 
-    def jump_start(self, jump_power=80.0):
+    def jump_start(self):
         if not self.jump_bool:
             self.jump_bool = True
-            self.jump_power = (jump_power * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
+            self.jump_power = (self.jump_power_first * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
             self.time = game_framework.time.time()
 
     def fire_ball(self):
