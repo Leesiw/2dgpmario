@@ -66,11 +66,17 @@ def ground_collide(character, map): # 캐릭터와 바닥 충돌 체크
 
         if map.tile_board[x + 1][y + 1] == 1 or map.tile_board[x + 1][y + 1] == 2: # flat ground
             if character.x + character.size_x / 2 > (x+1) * map.tile_width:
-                character.x = (x+1) * map.tile_width - character.size_x / 2
+                if character.name == 'item':
+                    character.dir = -1
+                else:
+                    character.x = (x+1) * map.tile_width - character.size_x / 2
 
         if map.tile_board[x - 1][y + 1] == 1 or map.tile_board[x - 1][y + 1] == 2: # flat ground
             if character.x - character.size_x / 4 < x * map.tile_width:
-                character.x = x * map.tile_width + character.size_x / 4
+                if character.name == 'item':
+                    character.dir = 1
+                else:
+                    character.x = x * map.tile_width + character.size_x / 4
 
 
 

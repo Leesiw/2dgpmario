@@ -2,6 +2,9 @@ import time
 DIE = 3
 
 def mario_with_monster(m, monster):
+    if m.unbeatable:
+        print('unbeatable')
+        return
     if 0 < m.x - monster.x < monster.size_x or 0 < monster.x - m.x < m.size_x:
         if 0 < monster.y + monster.size_y - m.y < m.size_y / 2:
             monster.state = DIE
@@ -10,7 +13,18 @@ def mario_with_monster(m, monster):
             m.jump_power = (20.0 * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
             m.time = time.time()
         elif m.y < monster.y + monster.size_y:
-            m.state = DIE
+            if m.state == 0:
+                m.state = DIE
+            elif m.state == 1:
+                m.state = 0
+                m.jump_power_first = 80.0
+                m.size_y = 40
+                m.unbeatable = True
+                m.unbeatable_timer = time.time()
+            elif m.state == 2:
+                m.state = 1
+                m.unbeatable = True
+                m.unbeatable_timer = time.time()
 
 def mario_with_goomba(m, goomba):
     if goomba.velocity == 1:
@@ -31,11 +45,13 @@ def mario_with_item(m, item):
             if item.type == 0:
                 if m.state == 0:
                     m.state = 1
+                    m.jump_power_first = 100.0
                     m.size_y = 60
             elif item.type == 1:
                 m.life_number += 1
             elif item.type == 2:
                 m.state = 2
+                m.jump_power_first = 100.0
                 m.size_y = 60
             return True
 
