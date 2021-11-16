@@ -8,6 +8,8 @@ import main_state
 
 class Hit:
     def do(block):
+        if block.cur_state == QmarkState and len(block.item_que) == 0:
+            block.cur_state = UsedState
         if (block.y >= block.start_y):
             current_time = game_framework.time.time() - block.time
             block.speed -= block.g * current_time
@@ -126,10 +128,11 @@ class Box:
                 if self.bottom < c_top < self.y:  # 블록 두드렸을 때
                     character.y = self.bottom - character.size_y / 2
                     character.jump_power = 0.0
-                    self.move_state = Hit
-                    self.hit_bool = True
-                    self.speed = (30.0 * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
-                    self.time = game_framework.time.time()
+                    if not self.cur_state == UsedState:
+                        self.move_state = Hit
+                        self.hit_bool = True
+                        self.speed = (30.0 * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
+                        self.time = game_framework.time.time()
 
             if self.y < c_bottom <= self.top: # 블록 위에 섰을 때
                 character.y = self.top + character.size_y / 2
