@@ -21,7 +21,7 @@ class Stage:
             self.map = Map(5000, 600, [[0] * 30 for _ in range(250)], 250, 30)
             self.all_box = All_box(3, self.camera)
             self.all_box.list = [Box(480, 130, None, None, 2)]
-            self.all_box.list[0].item_que = [0, 1]
+            self.all_box.list[0].item_que = [2, 1, 0]
             self.next_id = 2
             self.all_item = ItemAll(self.camera)
 
@@ -51,7 +51,7 @@ class Stage:
         elif id == 2:
             pass
 
-    def draw(self):
+    def draw(self, camera_x, camera_y):
         x_first = self.camera.x - (self.camera.width / 2)  # // map.tile_width - 1
         y_first = self.camera.y - (self.camera.height / 2)  # // map.tile_height - 2
 
@@ -82,6 +82,9 @@ class Stage:
             ground_collide(k, self.map)
         for i in self.all_item.list:
             ground_collide(i, self.map)
+        for f in self.mario.all_fireball.list:
+            ground_collide(f, self.map)
+
 
         character_camera_update(self.mario, self.camera)
         self.all_monster.camera = self.camera
@@ -90,7 +93,16 @@ class Stage:
         for i in self.all_item.list:
             self.all_box.collide(i)
 
-
+        for g in self.all_monster.goomba.list:
+            if g.state == ALIVE:
+                if self.camera.start_x - g.size_x < g.x < self.camera.start_x + self.camera.width + g.size_x:
+                    for f in self.mario.all_fireball.list:
+                        fireball_with_monster(f, g)
+        for k in self.all_monster.koopagreen.list:
+            if k.state == ALIVE:
+                if self.camera.start_x - k.size_x < k.x < self.camera.start_x + self.camera.width + k.size_x:
+                    for f in self.mario.all_fireball.list:
+                        fireball_with_monster(f, k)
 
         # 마리오와 몬스터 상호작용
         if self.mario.unbeatable:

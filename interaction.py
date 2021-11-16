@@ -10,7 +10,7 @@ def mario_with_monster(m, monster):
             monster.state = DIE
             monster.frame = 0
             m.jump_bool = True
-            m.jump_power = (20.0 * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
+            m.jump_power = (30.0 * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
             m.time = time.time()
         elif m.y < monster.y + monster.size_y:
             if m.state == 0:
@@ -45,13 +45,22 @@ def mario_with_item(m, item):
             if item.type == 0:
                 if m.state == 0:
                     m.state = 1
-                    m.jump_power_first = 100.0
+                    m.jump_power_first = 70.0
                     m.size_y = 60
             elif item.type == 1:
                 m.life_number += 1
             elif item.type == 2:
                 m.state = 2
-                m.jump_power_first = 100.0
+                m.jump_power_first = 70.0
                 m.size_y = 60
+                m.fire_bool = True
             return True
+
+def fireball_with_monster(f, monster):
+    if f.x - f.size_x < monster.x + monster.size_x and f.x + f.size_x > monster.x - monster.size_x:
+        if f.y - f.size_y < monster.y + monster.size_y and f.y + f.size_y > monster.y - monster.size_y:
+            monster.state = DIE
+            monster.frame = 0
+            return True
+    return False
 
