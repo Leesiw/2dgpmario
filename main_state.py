@@ -22,6 +22,7 @@ def enter():
     game_world.add_object(stage.all_box, 1)
     game_world.add_object(stage.all_item, 1)
     game_world.add_object(stage.all_monster, 1)
+    game_world.add_object(stage.mario.all_fireball, 1)
     game_world.add_object(stage.mario, 1)
 
 
@@ -43,7 +44,7 @@ def handle_events():
 def draw():
     clear_canvas()
     for game_object in game_world.all_objects():
-        game_object.draw()
+        game_object.draw(stage.camera.start_x, stage.camera.start_y)
     update_canvas()
 
 

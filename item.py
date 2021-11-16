@@ -99,7 +99,7 @@ class ItemAll:
     def __init__(self, camera):
         self.list = []
         self.camera = camera
-    def draw(self):
+    def draw(self, camera_x, camera_y):
         for i in self.list:
             i.draw(self.camera.start_x, self.camera.start_y)
 

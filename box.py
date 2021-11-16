@@ -164,11 +164,11 @@ class All_box:
         self.list = []
         self.camera = camera
 
-    def draw(self):
+    def draw(self, camera_x, camera_y):
         # print(self.camera.start_x, self.camera.x)
         for b in self.list:
-            if self.camera.start_x - b.width < b.x < self.camera.start_x + self.camera.width + b.width:
-                b.draw(self.camera.start_x, self.camera.start_y)
+            if camera_x - b.width < b.x < camera_x + self.camera.width + b.width:
+                b.draw(camera_x, camera_y)
 
     def update(self):
         for b in self.list:
