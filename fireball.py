@@ -15,7 +15,7 @@ class FireBall:
         self.dir = dir
         self.jump_power = self.jump_power_first
         self.jump_bool = True
-        self.size_x, self.size_y = 20, 20
+        self.size_x, self.size_y = 10, 10
         self.bound_num = 0
     def do(self):
         self.x += self.dir * self.speed * game_framework.frame_time
@@ -25,7 +25,7 @@ class FireBall:
         else:
             self.jump_power = self.jump_power_first
             self.bound_num += 1
-            if self.bound_num > 2:
+            if self.bound_num >= 2:
                 return True
             self.jump_bool = True
         return False

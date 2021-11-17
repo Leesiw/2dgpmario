@@ -17,7 +17,7 @@ def mario_with_monster(m, monster):
                 m.state = DIE
             elif m.state == 1:
                 m.state = 0
-                m.jump_power_first = 80.0
+                m.jump_power_first = 50.0
                 m.size_y = 40
                 m.unbeatable = True
                 m.unbeatable_timer = time.time()

@@ -6,6 +6,7 @@ history = []
 DEBUG_KEY = range(1)
 ALIVE, DIE = 0, 3
 
+G = 5 * (35.3094 * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
 
 class RunState:
     def enter(koopagreen, event):
@@ -53,6 +54,7 @@ next_state_table = {
 
 class KoopaGreen:
     image = None
+    name = 'koopagreen'
     speed = (12.0 * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
     action_speed = 1.0 / 0.05
     size_x, size_y = 40, 40
@@ -84,17 +86,16 @@ class KoopaGreen:
         self.cur_state.do(self)
         if len(self.event_que) > 0:
             event = self.event_que.pop()
-            try:
-                history.append((self.cur_state.__name__, event_name[event]))
-                self.cur_state.exit(self, event)
-                self.cur_state = next_state_table[self.cur_state][event]
-            except:
-                print('cur state : ', self.cur_state.__name__, 'event : ', event_name[event])
-                exit(-1)
+            # try:
+            #     history.append((self.cur_state.__name__, event_name[event]))
+            #     self.cur_state.exit(self, event)
+            #     self.cur_state = next_state_table[self.cur_state][event]
+            # except:
+            #     print('cur state : ', self.cur_state.__name__, 'event : ', event_name[event])
+            #     exit(-1)
             self.cur_state.enter(self, event)
         if self.jump_bool:
-            current_time = game_framework.time.time() - self.time
-            self.jump_power -= self.g * current_time
+            self.jump_power -= G * game_framework.frame_time
             self.y += self.jump_power * game_framework.frame_time
     def draw(self, camera_x, camera_y):
         self.cur_state.draw(self, camera_x, camera_y)

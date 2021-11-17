@@ -13,15 +13,15 @@ class Stage:
 
         if id == 1: # 테스트용 맵
             self.mario = Mario(600, 50)
-            all_goomba = All_goomba(3)
-            all_goomba.list = [Goomba(100, 50, 200), Goomba(200, 50, 300), Goomba(300, 50, 400)]
+            all_goomba = All_goomba(2)
+            all_goomba.list = [Goomba(100, 50, 200), Goomba(200, 50, 300)]
             all_koopagreen = All_koopagreen(2)
-            # all_koopagreen.list = [KoopaGreen(400, 50, 500), KoopaGreen(500, 50, 600)]
+            all_koopagreen.list = [KoopaGreen(400, 50, 500), KoopaGreen(500, 50, 600)]
             self.all_monster = All_monster(all_koopagreen, all_goomba, self.camera)
             self.map = Map(5000, 600, [[0] * 30 for _ in range(250)], 250, 30)
             self.all_box = All_box(3, self.camera)
-            self.all_box.list = [Box(480, 130, None, None, 2)]
-            self.all_box.list[0].item_que = [2, 1, 0]
+            self.all_box.list = [Box(950, 250, None, None, 2)]
+            self.all_box.list[0].item_que = [2, 0]
             self.next_id = 2
             self.all_item = ItemAll(self.camera)
 
@@ -42,11 +42,21 @@ class Stage:
                 self.map.tile_board[i][-i + 58] = 4
                 for j in range(0, -i + 58):
                     self.map.tile_board[i][j] = 2
-            for i in range(58, 80):
+            for i in range(58, 150):
                 self.map.tile_board[i][0] = 1
             for i in range(65, 70):
                 self.map.tile_board[i][2] = 1
                 self.map.tile_board[i][1] = 2
+                self.map.tile_board[i][0] = 2
+
+            for i in range(71, 75):
+                self.map.tile_board[i][5] = 1
+
+            for i in range(76, 80):
+                self.map.tile_board[i][8] = 1
+
+            for i in range(81, 85):
+                self.map.tile_board[i][15] = 1
 
         elif id == 2:
             pass
@@ -97,12 +107,14 @@ class Stage:
             if g.state == ALIVE:
                 if self.camera.start_x - g.size_x < g.x < self.camera.start_x + self.camera.width + g.size_x:
                     for f in self.mario.all_fireball.list:
-                        fireball_with_monster(f, g)
+                        if fireball_with_monster(f, g):
+                            self.mario.all_fireball.list.remove(f)
         for k in self.all_monster.koopagreen.list:
             if k.state == ALIVE:
                 if self.camera.start_x - k.size_x < k.x < self.camera.start_x + self.camera.width + k.size_x:
                     for f in self.mario.all_fireball.list:
-                        fireball_with_monster(f, k)
+                        if fireball_with_monster(f, k):
+                            self.mario.all_fireball.list.remove(f)
 
         # 마리오와 몬스터 상호작용
         if self.mario.unbeatable:

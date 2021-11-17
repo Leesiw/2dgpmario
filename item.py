@@ -1,6 +1,8 @@
 from pico2d import *
 import game_framework
 
+G = 5 * (35.3094 * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
+
 class Coin:
     pass
 
@@ -86,8 +88,7 @@ class Item:
             Item.ff_image = load_image('resource/fireflower.png')
     def update(self):
         if self.jump_bool:
-            current_time = game_framework.time.time() - self.time
-            self.jump_power -= self.g * current_time
+            self.jump_power -= G * game_framework.frame_time
             self.y += self.jump_power * game_framework.frame_time
         self.cur_state.do(self)
 

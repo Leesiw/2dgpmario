@@ -201,7 +201,7 @@ class Mario:
             self.jump_power = (self.jump_power_first * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
 
     def fire_ball(self):
-        if self.fire_bool:
+        if self.fire_bool and self.state == FIRE:
             self.fire_bool = False
 
             if self.dir == 1:
