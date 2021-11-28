@@ -14,7 +14,7 @@ class Stage:
         if id == 1: # 테스트용 맵
             self.mario = Mario(600, 50)
             all_goomba = All_goomba(2)
-            all_goomba.list = [Goomba(100, 50, 200), Goomba(200, 50, 300)]
+            all_goomba.list = [Goomba(200, 50, 300)]
             all_koopagreen = All_koopagreen(2)
             all_koopagreen.list = [KoopaGreen(400, 50, 500), KoopaGreen(500, 50, 600)]
             self.all_monster = All_monster(all_koopagreen, all_goomba, self.camera)
