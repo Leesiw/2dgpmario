@@ -2,6 +2,7 @@ import game_framework
 import game_world
 from pico2d import *
 import gameover_state
+import server
 
 from stage import *
 
@@ -11,19 +12,20 @@ name = "MainState"
 # map = None
 # mario = None
 # camera = None
-stage = None
+
 
 def enter():
-    global stage
-    stage = Stage(1)
+    server.stage = Stage(1)
 
-    game_world.add_object(stage.bk_ground, 0)
-    game_world.add_object(stage, 1)
-    game_world.add_object(stage.all_box, 1)
-    game_world.add_object(stage.all_item, 1)
-    game_world.add_object(stage.all_monster, 1)
-    game_world.add_object(stage.mario.all_fireball, 1)
-    game_world.add_object(stage.mario, 1)
+    game_world.add_object(server.stage.bk_ground, 0)
+    game_world.add_object(server.stage.camera, 0)
+    game_world.add_object(server.stage, 1)
+    game_world.add_object(server.stage.all_box, 1)
+    game_world.add_object(server.stage.all_item, 1)
+    game_world.add_object(server.stage.all_monster, 1)
+    game_world.add_object(server.stage.all_fireball, 1)
+    game_world.add_object(server.stage.mario, 1)
+    game_world.add_object(server.stage.ui, 1)
 
 
 def exit():
@@ -38,13 +40,13 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
         else:
-            stage.mario.handle_event(event)
+            server.stage.mario.handle_event(event)
 
 
 def draw():
     clear_canvas()
     for game_object in game_world.all_objects():
-        game_object.draw(stage.camera.start_x, stage.camera.start_y)
+        game_object.draw(server.stage.camera.start_x, server.stage.camera.start_y)
     update_canvas()
 
 
@@ -54,29 +56,19 @@ def draw():
 
 
 def update():
-    if stage.mario.state == DIE and stage.mario.frame > 5:
+    if server.stage.ui.life_num == 0:
         game_framework.change_state(gameover_state)
 
     for game_object in game_world.all_objects():
         game_object.update()
 
-    for b in stage.all_box.list:
+    for b in server.stage.all_box.list:
         if b.hit_bool:
             if not len(b.item_que) == 0:
                 state = b.item_que.pop()
                 item = Item(state, b.x, b.y + b.height, 1)
-                stage.all_item.list.append(item)
+                server.stage.all_item.list.append(item)
 
-
-
-    # if mario.die != 'die_ani':
-    #     mario_with_monster(mario, map.all_goomba, map)
-    #     mario_with_monster(mario, map.all_koopagreen, map)
-    # update_camera(camera, map, mario)
-    # move(mario, map)
-    #
-    # if mario.die == 'die':
-    #     game_framework.change_state(gameover_state)
 
 def pause():
     pass

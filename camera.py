@@ -1,4 +1,5 @@
 from map import *
+import server
 
 class Camera:
     def __init__(self, x, y, width, height, start_x=0, start_y=0):
@@ -6,6 +7,30 @@ class Camera:
         self.y = y
         self.width = width
         self.height = height
+        self.start_x = 0
+        self.start_y = 0
+    def update(self):
+        if server.stage.mario.x < self.width / 2:
+            self.x = self.width / 2
+            self.start_x = 0
+        elif server.stage.mario.x > server.stage.map.width - (self.width / 2):
+            self.x = server.stage.map.width - (self.width / 2)
+            self.start_x = self.x - (self.width / 2)
+        else:
+            self.x = server.stage.mario.x
+            self.start_x = self.x - (self.width / 2)
+
+        if server.stage.mario.y < self.height / 2:
+            self.y = self.height / 2
+            self.start_y = 0
+        elif server.stage.mario.y > self.height - (self.height / 2):
+            self.y = self.height - (self.height / 2)
+            self.start_y = self.y - (self.height / 2)
+        else:
+            self.y = server.stage.mario.y
+            self.start_y = self.y - (self.height / 2)
+    def draw(self, camera_x, camera_y):
+        pass
 
 
 def update_camera(camera, map, mario):

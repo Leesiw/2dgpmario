@@ -3,7 +3,7 @@ DIE = 3
 
 def mario_with_monster(m, monster):
     if m.unbeatable:
-        print('unbeatable')
+        # print('unbeatable')
         return
     if 0 < m.x - monster.x < monster.size_x or 0 < monster.x - m.x < m.size_x:
         if 0 < monster.y + monster.size_y - m.y < m.size_y / 2:
@@ -29,17 +29,13 @@ def mario_with_monster(m, monster):
 def mario_with_goomba(m, goomba):
     if goomba.velocity == 1:
         if goomba.x < m.x < goomba.x + 200: # 200pixel = 5m
-            print("see")
             goomba.add_event(0)     # SEE_MARIO
         else:
-            print("miss")
             goomba.add_event(1)  # MISS_MARIO
     else:
         if goomba.x - 200 < m.x < goomba.x:
-            print("see")
             goomba.add_event(0)     # SEE_MARIO
         else:
-            print("miss")
             goomba.add_event(1)  # MISS_MARIO
 
 

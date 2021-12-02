@@ -1,6 +1,7 @@
 from pico2d import *
 import game_framework
 from fireball import *
+import server
 
 history = []
 
@@ -123,7 +124,6 @@ class Mario:
         self.action_speed = 1.0 / 0.05
         self.event_que = []
         self.life_number = 3
-        self.all_fireball = All_FireBall()
         self.g = 5.0 * (35.3094 * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
@@ -142,11 +142,20 @@ class Mario:
         self.event_que.insert(0, event)
 
     def update(self):
+        server.stage.all_box.collide(self)
+
         if self.state == DIE and not self.cur_state == DieState:
             self.state = DIE
             self.cur_state = DieState
             self.frame = 0
             self.cur_state.enter(self, None)
+        elif self.state == DIE and self.frame > 4:
+            life_num = server.stage.ui.life_num
+            id = server.stage.id
+            server.stage.restart(id)
+            server.stage.ui.life_num = life_num - 1
+            self.state = SMALL
+
         elif self.state == FIRE:
             if not self.fire_bool and self.fire_timer + 3.0 < game_framework.time.time():
                 self.fire_bool = True
@@ -209,6 +218,6 @@ class Mario:
             else:
                 f = FireBall(self.x - self.size_x / 2, self.y, -1)
 
-            self.all_fireball.list.append(f)
+            server.stage.all_fireball.list.append(f)
             self.fire_timer = game_framework.time.time()
 
