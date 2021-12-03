@@ -23,7 +23,6 @@ class RunState:
             koopagreen.velocity = 1
 
         koopagreen.x += koopagreen.velocity * koopagreen.speed * game_framework.frame_time
-        koopagreen.x = clamp(25, koopagreen.x, 1600 - 25)
 
     def draw(koopagreen, camera_x, camera_y):
         if koopagreen.velocity == 1:

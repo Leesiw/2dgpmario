@@ -26,7 +26,6 @@ class RunState:
             goomba.velocity = 1
 
         goomba.x += goomba.velocity * goomba.speed * game_framework.frame_time
-        goomba.x = clamp(25, goomba.x, 1600 - 25)
 
     def draw(goomba, camera_x, camera_y):
         if goomba.velocity == 1:
@@ -47,7 +46,6 @@ class DashState:
         goomba.frame = (goomba.frame + goomba.action_speed * game_framework.frame_time) % 8
 
         goomba.x += goomba.velocity * goomba.speed * game_framework.frame_time
-        goomba.x = clamp(25, goomba.x, 1600 - 25)
 
     def draw(goomba, camera_x, camera_y):
         if goomba.velocity == 1:
@@ -81,7 +79,8 @@ class Goomba:
     def __init__(self, x, y, next_x):
         self.x, self.y = x, y
         self.size_x, self.size_y = 40, 40
-        self.jump_bool = False
+        self.jump_bool = True
+        self.jump_power = 0
         self.start_x = x
         self.next_x = next_x
         self.frame = 0

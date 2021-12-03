@@ -7,6 +7,7 @@ from box import *
 from item import *
 from ui import *
 from fireball import *
+import pickle
 
 class Stage:
     camera = None
@@ -27,14 +28,16 @@ class Stage:
         if id == 1: # 테스트용 맵
             self.mario = Mario(600, 50)
             all_goomba = All_goomba(2)
-            all_goomba.list = [Goomba(200, 50, 300)]
+            all_goomba.list = [Goomba(300, 50, 1800), Goomba(1700, 550, 1800), Goomba(1800, 550, 1900), Goomba(1900, 550, 2000)]
             all_koopagreen = All_koopagreen(2)
-            all_koopagreen.list = [KoopaGreen(400, 50, 500)]    # , KoopaGreen(500, 50, 600)
+            all_koopagreen.list = [KoopaGreen(2050, 50, 2150), KoopaGreen(2100, 50, 2200), KoopaGreen(2150, 50, 2250), KoopaGreen(2200, 50, 2300)]    # , KoopaGreen(500, 50, 600)
             self.all_monster = All_monster(all_koopagreen, all_goomba, self.camera)
             self.map = Map(5000, 600, [[0] * 30 for _ in range(250)], 250, 30)
             self.all_box = All_box(3, self.camera)
-            self.all_box.list = [Box(950, 250, None, None, 2)]
-            self.all_box.list[0].item_que = [2, 0]
+            self.all_box.list = [Box(950, 250, None, None, 2), Box(1800, 400, None, None, 2), Box(1950, 400, None, None, 2), Box(2100, 200, None, None, 1), Box(2200, 200, None, None, 1)]
+            self.all_box.list[0].item_que = [0]
+            self.all_box.list[1].item_que = [0]
+            self.all_box.list[2].item_que = [2]
             self.all_fireball = All_FireBall()
             self.next_id = 2
             self.all_item = ItemAll(self.camera)
@@ -64,14 +67,20 @@ class Stage:
                 self.map.tile_board[i][1] = 2
                 self.map.tile_board[i][0] = 2
 
-            for i in range(71, 75):
+            for i in range(70, 75):
+                for j in range(0, 5):
+                    self.map.tile_board[i][j] = 2
                 self.map.tile_board[i][5] = 1
 
-            for i in range(76, 80):
+            for i in range(75, 80):
+                for j in range(0, 8):
+                    self.map.tile_board[i][j] = 2
                 self.map.tile_board[i][8] = 1
 
-            for i in range(81, 85):
-                self.map.tile_board[i][15] = 1
+            for i in range(80, 100):
+                for j in range(0, 12):
+                    self.map.tile_board[i][j] = 2
+                self.map.tile_board[i][12] = 1
 
         elif id == 2:
             pass

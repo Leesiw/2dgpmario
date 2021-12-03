@@ -14,6 +14,8 @@ name = "MainState"
 # camera = None
 
 
+
+
 def enter():
     server.stage = Stage(1)
 
@@ -26,6 +28,11 @@ def enter():
     game_world.add_object(server.stage.all_fireball, 1)
     game_world.add_object(server.stage.mario, 1)
     game_world.add_object(server.stage.ui, 1)
+
+    import pickle
+
+    with open('stage1.txt', 'wb') as f:
+        pickle.dump(server.stage, f)
 
 
 def exit():
