@@ -13,8 +13,8 @@ class Camera:
         if server.stage.mario.x < self.width / 2:
             self.x = self.width / 2
             self.start_x = 0
-        elif server.stage.mario.x > server.stage.map.width - (self.width / 2):
-            self.x = server.stage.map.width - (self.width / 2)
+        elif server.stage.mario.x >= server.stage.map.width - (self.width / 2):
+            self.x = server.stage.map.width - (self.width / 2) - server.stage.map.tile_width
             self.start_x = self.x - (self.width / 2)
         else:
             self.x = server.stage.mario.x

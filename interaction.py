@@ -49,7 +49,7 @@ def mario_with_item(m, item):
                     m.size_y = 60
             elif item.type == 1:
                 server.stage.ui.score += 100
-                server.stage.ui.life_number += 1
+                server.stage.ui.life_num += 1
             elif item.type == 2:
                 server.stage.ui.score += 70
                 m.state = 2
@@ -62,6 +62,7 @@ def fireball_with_monster(f, monster):
     if f.x - f.size_x < monster.x + monster.size_x and f.x + f.size_x > monster.x - monster.size_x:
         if f.y - f.size_y < monster.y + monster.size_y and f.y + f.size_y > monster.y - monster.size_y:
             monster.state = DIE
+            server.ui.score += 30
             monster.frame = 0
             return True
     return False

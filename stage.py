@@ -7,7 +7,6 @@ from box import *
 from item import *
 from ui import *
 from fireball import *
-import pickle
 
 class Stage:
     camera = None
@@ -20,29 +19,38 @@ class Stage:
     next_id = None
     all_item = None
     ui = None
+    goal_in_x = None
+    flag = None
+    flag_image = None
 
     def __init__(self, id):
         self.camera = Camera(400, 300, 800, 600)
         self.bk_ground = Bkground()
         self.id = id
+
+        if Stage.flag_image == None:
+            Stage.flag_image = load_image('resource/flag.png')
+
         if id == 1: # 테스트용 맵
             self.mario = Mario(600, 50)
             all_goomba = All_goomba(2)
-            all_goomba.list = [Goomba(300, 50, 1800), Goomba(1700, 550, 1800), Goomba(1800, 550, 1900), Goomba(1900, 550, 2000)]
+            all_goomba.list = [Goomba(00, 50, 100), Goomba(1700, 550, 1800), Goomba(1800, 550, 1900), Goomba(1900, 550, 2000)]
             all_koopagreen = All_koopagreen(2)
-            all_koopagreen.list = [KoopaGreen(2050, 50, 2150), KoopaGreen(2100, 50, 2200), KoopaGreen(2150, 50, 2250), KoopaGreen(2200, 50, 2300)]    # , KoopaGreen(500, 50, 600)
+            all_koopagreen.list = [KoopaGreen(2050, 50, 2150), KoopaGreen(2100, 50, 2200), KoopaGreen(2150, 50, 2200), KoopaGreen(2120, 50, 2200)]    # , KoopaGreen(500, 50, 600)
             self.all_monster = All_monster(all_koopagreen, all_goomba, self.camera)
-            self.map = Map(5000, 600, [[0] * 30 for _ in range(250)], 250, 30)
+            self.map = Map(5000, 600, [[0] * 30 for _ in range(252)], 250, 30)
             self.all_box = All_box(3, self.camera)
-            self.all_box.list = [Box(950, 250, None, None, 2), Box(1800, 400, None, None, 2), Box(1950, 400, None, None, 2), Box(2100, 200, None, None, 1), Box(2200, 200, None, None, 1)]
+            self.all_box.list = [Box(950, 250, None, None, 2), Box(1800, 400, None, None, 2), Box(1950, 400, None, None, 2), Box(2100, 100, None, None, 2)]
             self.all_box.list[0].item_que = [0]
             self.all_box.list[1].item_que = [0]
             self.all_box.list[2].item_que = [2]
+            self.all_box.list[3].item_que = [1]
             self.all_fireball = All_FireBall()
             self.next_id = 2
             self.all_item = ItemAll(self.camera)
             self.ui = Ui()
-
+            self.goal_in_x = 4700
+            self.goal_in_bool = False
             for i in range(0, 39):
                 self.map.tile_board[i][1] = 1
                 self.map.tile_board[i][0] = 2
@@ -55,12 +63,12 @@ class Stage:
                 self.map.tile_board[i][7] = 1
                 for j in range(0, 7):
                     self.map.tile_board[i][j] = 2
-
             for i in range(51, 58):
                 self.map.tile_board[i][-i + 58] = 4
                 for j in range(0, -i + 58):
                     self.map.tile_board[i][j] = 2
-            for i in range(58, 150):
+
+            for i in range(58, 110):
                 self.map.tile_board[i][0] = 1
             for i in range(65, 70):
                 self.map.tile_board[i][2] = 1
@@ -77,15 +85,66 @@ class Stage:
                     self.map.tile_board[i][j] = 2
                 self.map.tile_board[i][8] = 1
 
-            for i in range(80, 100):
+            for i in range(80, 101):
                 for j in range(0, 12):
                     self.map.tile_board[i][j] = 2
                 self.map.tile_board[i][12] = 1
+
+            for i in range(115, 250):
+                self.map.tile_board[i][0] = 1
+
+            for i in range(140, 150):
+                self.map.tile_board[i][i - 139] = 3
+                for j in range(0, i - 139):
+                    self.map.tile_board[i][j] = 2
+            for i in range(150, 155):
+                self.map.tile_board[i][10] = 1
+                for j in range(0, 10):
+                    self.map.tile_board[i][j] = 2
+            for i in range(155, 160):
+                self.map.tile_board[i][-i + 165] = 4
+                for j in range(0, -i + 165):
+                    self.map.tile_board[i][j] = 2
+
+            for i in range(160, 170):
+                self.map.tile_board[i][5] = 1
+                for j in range(0, 5):
+                    self.map.tile_board[i][j] = 2
+
+            for i in range(170, 180):
+                self.map.tile_board[i][i - 164] = 3
+                for j in range(0, i - 164):
+                    self.map.tile_board[i][j] = 2
+            for i in range(180, 185):
+                self.map.tile_board[i][15] = 1
+                for j in range(0, 15):
+                    self.map.tile_board[i][j] = 2
+            for i in range(185, 190):
+                self.map.tile_board[i][-i + 200] = 4
+                for j in range(0, -i + 200):
+                    self.map.tile_board[i][j] = 2
+
+            for i in range(190, 200):
+                self.map.tile_board[i][10] = 1
+                for j in range(0, 10):
+                    self.map.tile_board[i][j] = 2
+
+            for i in range(200, 210):
+                self.map.tile_board[i][5] = 1
+                for j in range(0, 5):
+                    self.map.tile_board[i][j] = 2
+
+            for i in range(210, 220):
+                self.map.tile_board[i][1] = 1
+                for j in range(0, 1):
+                    self.map.tile_board[i][j] = 2
 
         elif id == 2:
             pass
 
     def draw(self, camera_x, camera_y):
+        self.flag_image.draw(self.goal_in_x - camera_x, 130 - camera_y, 300, 300)
+
         x_first = self.camera.x - (self.camera.width / 2)  # // map.tile_width - 1
         y_first = self.camera.y - (self.camera.height / 2)  # // map.tile_height - 2
 
@@ -105,7 +164,18 @@ class Stage:
                 elif self.map.tile_board[i][j] == 4:  # slopping ground right up
                     self.map.image.clip_draw(81, 0, 81, 71, i * self.map.tile_width - x_first, j * self.map.tile_height - y_first, self.map.tile_width, self.map.tile_height)
 
+
+
     def update(self):
+        if self.mario.x > self.goal_in_x:
+            if not self.goal_in_bool:
+                self.goal_in_bool = True
+                self.goal_timer = time.time()
+
+            if self.next_id != 0 and time.time() - self.goal_timer > 5.0:
+                self.move_to_next(self.next_id)
+
+
         ground_collide(self.mario, self.map)
         for g in self.all_monster.goomba.list:
             ground_collide(g, self.map)
@@ -152,6 +222,10 @@ class Stage:
             if self.camera.start_x - i.size_x < i.x < self.camera.start_x + self.camera.width + i.size_x:
                 if mario_with_item(self.mario, i):
                     self.all_item.list.remove(i)
+
+
+
+
 
     def restart(self, id):
         # self.camera.__init__(400, 300, 800, 600)
@@ -211,9 +285,58 @@ class Stage:
         elif id == 2:
             pass
 
-        def __setstate__(self, state=None, id=None):
-            self.__init__()
-            self.__dict__.update(state)
+    def move_to_next(self, id):
+        if id == 2:  # 테스트용 맵
+            self.mario.__init__(600, 50)
+            all_goomba = All_goomba(2)
+            all_goomba.list = [Goomba(200, 50, 300)]
+            all_koopagreen = All_koopagreen(2)
+            all_koopagreen.list = [KoopaGreen(400, 50, 500)]  # , KoopaGreen(500, 50, 600)
+            self.all_monster.__init__(all_koopagreen, all_goomba, self.camera)
+            # self.map = Map(5000, 600, [[0] * 30 for _ in range(250)], 250, 30)
+            self.all_box.__init__(3, self.camera)
+            self.all_box.list = [Box(950, 250, None, None, 2)]
+            self.all_box.list[0].item_que = [2, 0]
+            self.next_id = 0
+            self.all_fireball.__init__()
+            self.all_item.__init__(self.camera)
+
+            self.goal_in_bool = False
+            self.ui.time = 100
+            self.ui.score = 0
+
+            for i in range(0, 39):
+                self.map.tile_board[i][1] = 1
+                self.map.tile_board[i][0] = 2
+
+            for i in range(39, 45):
+                self.map.tile_board[i][i - 37] = 3
+                for j in range(0, i - 37):
+                    self.map.tile_board[i][j] = 2
+            for i in range(45, 51):
+                self.map.tile_board[i][7] = 1
+                for j in range(0, 7):
+                    self.map.tile_board[i][j] = 2
+
+            for i in range(51, 58):
+                self.map.tile_board[i][-i + 58] = 4
+                for j in range(0, -i + 58):
+                    self.map.tile_board[i][j] = 2
+            for i in range(58, 150):
+                self.map.tile_board[i][0] = 1
+            for i in range(65, 70):
+                self.map.tile_board[i][2] = 1
+                self.map.tile_board[i][1] = 2
+                self.map.tile_board[i][0] = 2
+
+            for i in range(71, 75):
+                self.map.tile_board[i][5] = 1
+
+            for i in range(76, 80):
+                self.map.tile_board[i][8] = 1
+
+            for i in range(81, 85):
+                self.map.tile_board[i][15] = 1
 
 
 
