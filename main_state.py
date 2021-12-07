@@ -3,6 +3,7 @@ import game_world
 from pico2d import *
 import gameover_state
 import clear_state
+import pause_state
 import server
 
 from stage import *
@@ -46,7 +47,7 @@ def handle_events():
         if event.type == SDL_QUIT:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-            game_framework.quit()
+            game_framework.push_state(pause_state)
         else:
             server.stage.mario.handle_event(event)
 
