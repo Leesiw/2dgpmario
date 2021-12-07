@@ -5,12 +5,13 @@ from pico2d import *
 
 name = "GameOverState"
 image = None
-
+sound = None
 
 def enter():
-    global image
+    global image, sound
     image = load_image('resource/gameover.png')
-
+    sound = load_music('resource/Game over.wav')
+    sound.play(1)
 
 def exit():
     global image

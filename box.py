@@ -74,6 +74,7 @@ class Box:
     height = 25
     image = None
     g = (35.3094 * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
+    hit_sound = None
 
     def __init__(self, x, y, item, coin_number, state):
         self.x = x
@@ -94,6 +95,10 @@ class Box:
         self.right = self.x + self.width / 2
         self.top = self.y + self.height / 2
         self.bottom = self.y - self.height / 2
+
+        if Box.hit_sound == None:
+            Box.hit_sound = load_music('resource/Itemsprouting.wav')
+            Box.hit_sound.set_volume(64)
 
         if state == 0:
             self.cur_state = UsedState
@@ -133,6 +138,7 @@ class Box:
                         self.hit_bool = True
                         self.speed = (30.0 * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
                         self.time = game_framework.time.time()
+                        self.hit_sound.play(1)
 
             if self.y < c_bottom <= self.top: # 블록 위에 섰을 때
                 character.y = self.top + character.size_y / 2

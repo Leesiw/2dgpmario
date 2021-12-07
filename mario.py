@@ -110,6 +110,8 @@ class Mario:
     image = None
     fire_image = None
     name = 'mario'
+    jump_sound = None
+    die_sound = None
 
     def __init__(self, x, y):
         self.x, self.y = x, y
@@ -134,6 +136,14 @@ class Mario:
         self.on_box = False
         self.fire_bool = True
         self.fire_timer = 0.0
+        if Mario.jump_sound == None:
+            Mario.jump_sound = load_music('resource/Jump.wav')
+            Mario.jump_sound.set_volume(32)
+
+        if Mario.die_sound == None:
+            Mario.die_sound = load_music('resource/Mario dies.wav')
+            Mario.die_sound.set_volume(32)
+
         if Mario.image == None:
             Mario.image = load_image('resource/mario.png.gif')
         if Mario.fire_image == None:
@@ -148,6 +158,7 @@ class Mario:
         server.stage.all_box.collide(self)
 
         if self.state == DIE and not self.cur_state == DieState:
+            self.die_sound.play(1)
             self.state = DIE
             self.cur_state = DieState
             self.frame = 0
@@ -213,6 +224,7 @@ class Mario:
         if not self.jump_bool:
             self.jump_bool = True
             self.jump_power = (self.jump_power_first * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
+            self.jump_sound.play(1)
 
     def fire_ball(self):
         if self.fire_bool and self.state == FIRE:

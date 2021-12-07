@@ -1,6 +1,22 @@
 import time
+import pico2d
 import server
 DIE = 3
+
+power_down = None
+power_up = None
+
+def power_up_play():
+    global power_up
+    if power_up == None:
+        power_up = pico2d.load_music('resource/Power up.wav')
+    power_up.play(1)
+
+def power_down_play():
+    global power_down
+    if power_down == None:
+        power_down = pico2d.load_music('resource/Power down.wav')
+    power_down.play(1)
 
 def mario_with_monster(m, monster):
     if 0 < m.x - monster.x < monster.size_x or 0 < monster.x - m.x < m.size_x:
@@ -20,10 +36,12 @@ def mario_with_monster(m, monster):
                 m.size_y = 40
                 m.unbeatable = True
                 m.unbeatable_timer = time.time()
+                power_down_play()
             elif m.state == 2:
                 m.state = 1
                 m.unbeatable = True
                 m.unbeatable_timer = time.time()
+                power_down_play()
 
 def mario_with_goomba(m, goomba):
     if goomba.velocity == 1:
@@ -47,6 +65,7 @@ def mario_with_item(m, item):
                     m.state = 1
                     m.jump_power_first = 70.0
                     m.size_y = 60
+                    power_up_play()
             elif item.type == 1:
                 server.stage.ui.score += 100
                 server.stage.ui.life_num += 1
@@ -56,6 +75,7 @@ def mario_with_item(m, item):
                 m.jump_power_first = 70.0
                 m.size_y = 60
                 m.fire_bool = True
+                power_up_play()
             return True
 
 def fireball_with_monster(f, monster):
