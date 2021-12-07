@@ -67,7 +67,7 @@ def update():
     if server.stage.ui.life_num == 0:
         game_framework.change_state(gameover_state)
 
-    if server.stage.goal_in_bool and server.stage.next_id == 2 and server.stage.goal_timer + 5.0 < time.time():
+    if server.stage.goal_in_bool and server.stage.next_id == 0 and server.stage.goal_timer + 5.0 < time.time():
         game_framework.change_state(clear_state)
 
     for game_object in game_world.all_objects():

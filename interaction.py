@@ -62,7 +62,7 @@ def fireball_with_monster(f, monster):
     if f.x - f.size_x < monster.x + monster.size_x and f.x + f.size_x > monster.x - monster.size_x:
         if f.y - f.size_y < monster.y + monster.size_y and f.y + f.size_y > monster.y - monster.size_y:
             monster.state = DIE
-            server.ui.score += 30
+            server.stage.ui.score += 30
             monster.frame = 0
             return True
     return False

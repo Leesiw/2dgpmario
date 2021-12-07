@@ -63,6 +63,7 @@ class RunState:
         mario.dir = mario.velocity
 
     def exit(mario, event):
+
         if event == SPACE:
             mario.jump_start()
         if event == L_CLICK:
@@ -137,6 +138,8 @@ class Mario:
             Mario.image = load_image('resource/mario.png.gif')
         if Mario.fire_image == None:
             Mario.fire_image = load_image('resource/fireball.png')
+        self.first_bool = True
+        self.velocity = 0
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -162,14 +165,16 @@ class Mario:
         self.cur_state.do(self)
         if len(self.event_que) > 0:
             event = self.event_que.pop()
-            try:
-                history.append((self.cur_state.__name__, event_name[event]))
-                self.cur_state.exit(self, event)
-                self.cur_state = next_state_table[self.cur_state][event]
-            except:
-                print('cur state : ', self.cur_state.__name__, 'event : ', event_name[event])
-                exit(-1)
-            self.cur_state.enter(self, event)
+            if not (self.first_bool and (event == RIGHT_UP or event == LEFT_UP)):
+                try:
+                    history.append((self.cur_state.__name__, event_name[event]))
+                    self.cur_state.exit(self, event)
+                    self.cur_state = next_state_table[self.cur_state][event]
+                except:
+                    print('cur state : ', self.cur_state.__name__, 'event : ', event_name[event])
+                    exit(-1)
+                self.cur_state.enter(self, event)
+            self.first_bool = False
 
         if self.jump_bool:
             self.jump_power -= self.g * game_framework.frame_time
