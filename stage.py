@@ -183,6 +183,11 @@ class Stage:
     def update(self):
         if self.mario.x > self.goal_in_x:
             if not self.goal_in_bool:
+                if self.ui.score >= self.ui.full_score:
+                    self.all_box.list.append(Box(self.goal_in_x + 100, 130, None, None, 2))
+                    num = len(self.all_box.list) - 1
+                    self.all_box.list[num].item_que = [1]
+
                 self.goal_in_bool = True
                 self.goal_timer = time.time()
 
@@ -203,33 +208,35 @@ class Stage:
         for i in self.all_item.list:
             self.all_box.collide(i)
 
-        for g in self.all_monster.goomba.list:
-            if g.state == ALIVE:
-                if self.camera.start_x - g.size_x < g.x < self.camera.start_x + self.camera.width + g.size_x:
-                    for f in self.all_fireball.list:
-                        if fireball_with_monster(f, g):
-                            self.all_fireball.list.remove(f)
-        for k in self.all_monster.koopagreen.list:
-            if k.state == ALIVE:
-                if self.camera.start_x - k.size_x < k.x < self.camera.start_x + self.camera.width + k.size_x:
-                    for f in self.all_fireball.list:
-                        if fireball_with_monster(f, k):
-                            self.all_fireball.list.remove(f)
+        if not self.goal_in_bool:
+            for g in self.all_monster.goomba.list:
+                if g.state == ALIVE:
+                    if self.camera.start_x - g.size_x < g.x < self.camera.start_x + self.camera.width + g.size_x:
+                        for f in self.all_fireball.list:
+                            if fireball_with_monster(f, g):
+                                self.all_fireball.list.remove(f)
+            for k in self.all_monster.koopagreen.list:
+                if k.state == ALIVE:
+                    if self.camera.start_x - k.size_x < k.x < self.camera.start_x + self.camera.width + k.size_x:
+                        for f in self.all_fireball.list:
+                            if fireball_with_monster(f, k):
+                                self.all_fireball.list.remove(f)
 
         # 마리오와 몬스터 상호작용
         if self.mario.unbeatable:
             if time.time() > self.mario.unbeatable_timer + 3.0:
                 self.mario.unbeatable = False
         else:
-            for g in self.all_monster.goomba.list:
-                if g.state == ALIVE:
-                    if self.camera.start_x - g.size_x < g.x < self.camera.start_x + self.camera.width + g.size_x:
-                        mario_with_monster(self.mario, g)
-                        mario_with_goomba(self.mario, g)
-            for k in self.all_monster.koopagreen.list:
-                if k.state == ALIVE:
-                    if self.camera.start_x - k.size_x < k.x < self.camera.start_x + self.camera.width + k.size_x:
-                        mario_with_monster(self.mario, k)
+            if not self.goal_in_bool:
+                for g in self.all_monster.goomba.list:
+                    if g.state == ALIVE:
+                        if self.camera.start_x - g.size_x < g.x < self.camera.start_x + self.camera.width + g.size_x:
+                            mario_with_monster(self.mario, g)
+                            mario_with_goomba(self.mario, g)
+                for k in self.all_monster.koopagreen.list:
+                    if k.state == ALIVE:
+                        if self.camera.start_x - k.size_x < k.x < self.camera.start_x + self.camera.width + k.size_x:
+                            mario_with_monster(self.mario, k)
 
 
         for i in self.all_item.list:
