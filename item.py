@@ -91,6 +91,7 @@ class Item:
             self.jump_power -= G * game_framework.frame_time
             self.y += self.jump_power * game_framework.frame_time
         self.cur_state.do(self)
+        self.x = clamp(0, self.x, 4990)
 
     def draw(self, camera_x, camera_y):
         self.cur_state.draw(self, camera_x, camera_y)

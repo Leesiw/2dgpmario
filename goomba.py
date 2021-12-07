@@ -114,6 +114,7 @@ class Goomba:
                 print('cur state : ', self.cur_state.__name__, 'event : ', event_name[event])
                 exit(-1)
             self.cur_state.enter(self, event)
+        self.x = clamp(0, self.x, 4990)
         if self.jump_bool:
             self.jump_power -= G * game_framework.frame_time
             self.y += self.jump_power * game_framework.frame_time
