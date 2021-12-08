@@ -292,10 +292,13 @@ class Stage:
             all_goomba = All_goomba(2)
             all_goomba.list = [Goomba(20, 50, 100), Goomba(1700, 550, 1800), Goomba(1800, 550, 1900),
                                Goomba(1900, 550, 2000),
-                               Goomba(3400, 450, 3600), Goomba(3500, 450, 3700), Goomba(3600, 450, 3800)]
+                               Goomba(3400, 450, 3600), Goomba(3500, 450, 3700), Goomba(3600, 450, 3800),
+                               Goomba(2900, 350, 3000), Goomba(3000, 250, 3100),
+                               Goomba(3100, 250, 3200),
+                               ]
 
             all_koopagreen = All_koopagreen(2)
-            all_koopagreen.list = [KoopaGreen(2050, 50, 2150), KoopaGreen(2100, 50, 2200),
+            all_koopagreen.list = [KoopaGreen(2050, 100, 2100), KoopaGreen(2100, 100, 2120),
                                    KoopaGreen(2900, 350, 3000), KoopaGreen(3000, 250, 3100),
                                    KoopaGreen(3100, 250, 3200),
                                    KoopaGreen(3200, 250,
@@ -336,10 +339,13 @@ class Stage:
                 all_goomba = All_goomba(2)
                 all_goomba.list = [Goomba(20, 50, 100), Goomba(1700, 550, 1800), Goomba(1800, 550, 1900),
                                    Goomba(1900, 550, 2000),
-                                   Goomba(3400, 450, 3600), Goomba(3500, 450, 3700), Goomba(3600, 450, 3800)]
+                                   Goomba(3400, 450, 3600), Goomba(3500, 450, 3700), Goomba(3600, 450, 3800),
+                                   Goomba(2900, 350, 3000), Goomba(3000, 250, 3100),
+                                   Goomba(3100, 250, 3200),
+                                   ]
 
                 all_koopagreen = All_koopagreen(2)
-                all_koopagreen.list = [KoopaGreen(2050, 50, 2150), KoopaGreen(2100, 50, 2200),
+                all_koopagreen.list = [KoopaGreen(2050, 100, 2100), KoopaGreen(2100, 100, 2120),
                                        KoopaGreen(2900, 350, 3000), KoopaGreen(3000, 250, 3100),
                                        KoopaGreen(3100, 250, 3200),
                                        KoopaGreen(3200, 250,
