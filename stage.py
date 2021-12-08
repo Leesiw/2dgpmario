@@ -34,11 +34,14 @@ class Stage:
         if id == 1: # 테스트용 맵
             self.mario = Mario(600, 50)
             all_goomba = All_goomba(2)
-            all_goomba.list = [Goomba(20, 50, 100), Goomba(1700, 550, 1800), Goomba(1800, 550, 1900), Goomba(1900, 550, 2000),
-                               Goomba(3500, 350, 3600), Goomba(3500, 350, 3550), Goomba(3500, 350, 3650)]
+            all_goomba.list = [Goomba(20, 50, 100), Goomba(1700, 550, 1800), Goomba(1800, 550, 1900),
+                               Goomba(1900, 550, 2000),
+                               Goomba(3400, 350, 3600), Goomba(3500, 350, 3700), Goomba(3600, 350, 3800)]
             all_koopagreen = All_koopagreen(2)
-            all_koopagreen.list = [KoopaGreen(2050, 50, 2150), KoopaGreen(2100, 50, 2200), KoopaGreen(2150, 50, 2200), KoopaGreen(2120, 50, 2200),
-                                   KoopaGreen(3000, 250, 3100), KoopaGreen(3000, 250, 3050), KoopaGreen(3000, 250, 3150),]    # , KoopaGreen(500, 50, 600)
+            all_koopagreen.list = [KoopaGreen(2050, 50, 2150), KoopaGreen(2100, 50, 2200),
+                                   KoopaGreen(3000, 250, 3100), KoopaGreen(3100, 250, 3200),
+                                   KoopaGreen(3200, 250,
+                                              3300), ]  # , KoopaGreen(500, 50, 600)
             self.all_monster = All_monster(all_koopagreen, all_goomba, self.camera)
             self.map = Map(5000, 600, [[0] * 30 for _ in range(252)], 250, 30)
             self.all_box = All_box(3, self.camera)
@@ -252,17 +255,18 @@ class Stage:
 
 
     def restart(self, id):
+
         if id == 1:  # 테스트용 맵
             self.mario.__init__(600, 50)
             all_goomba = All_goomba(2)
             all_goomba.list = [Goomba(20, 50, 100), Goomba(1700, 550, 1800), Goomba(1800, 550, 1900),
                                Goomba(1900, 550, 2000),
-                               Goomba(3500, 350, 3600), Goomba(3500, 350, 3550), Goomba(3500, 350, 3650)]
+                               Goomba(3400, 350, 3600), Goomba(3500, 350, 3700), Goomba(3600, 350, 3800)]
             all_koopagreen = All_koopagreen(2)
-            all_koopagreen.list = [KoopaGreen(2050, 50, 2150), KoopaGreen(2100, 50, 2200), KoopaGreen(2150, 50, 2200),
-                                   KoopaGreen(2120, 50, 2200),
-                                   KoopaGreen(3000, 250, 3100), KoopaGreen(3000, 250, 3050),
-                                   KoopaGreen(3000, 250, 3150), ]  # , KoopaGreen(500, 50, 600)
+            all_koopagreen.list = [KoopaGreen(2050, 50, 2150), KoopaGreen(2100, 50, 2200),
+                                   KoopaGreen(3000, 250, 3100), KoopaGreen(3100, 250, 3200),
+                                   KoopaGreen(3200, 250,
+                                              3300), ]  # , KoopaGreen(500, 50, 600)
 
             self.all_monster.__init__(all_koopagreen, all_goomba, self.camera)
             # self.map = Map(5000, 600, [[0] * 30 for _ in range(250)], 250, 30)
@@ -288,13 +292,12 @@ class Stage:
             all_goomba = All_goomba(2)
             all_goomba.list = [Goomba(20, 50, 100), Goomba(1700, 550, 1800), Goomba(1800, 550, 1900),
                                Goomba(1900, 550, 2000),
-                               Goomba(3500, 350, 3600), Goomba(3500, 350, 3550), Goomba(3500, 350, 3650),
-                               Goomba(2050, 50, 2150), Goomba(2100, 50, 2200),
-                               Goomba(2150, 50, 2200), Goomba(2120, 50, 2200),
-                               Goomba(3000, 250, 3100), Goomba(3000, 250, 3050),
-                               Goomba(3000, 250, 3150)
-                               ]
+                               Goomba(3400, 350, 3600), Goomba(3500, 350, 3700), Goomba(3600, 350, 3800)]
             all_koopagreen = All_koopagreen(2)
+            all_koopagreen.list = [KoopaGreen(2050, 50, 2150), KoopaGreen(2100, 50, 2200),
+                                   KoopaGreen(2900, 250, 3000), KoopaGreen(3000, 250, 3100), KoopaGreen(3100, 250, 3200),
+                                   KoopaGreen(3200, 250,
+                                              3300), ]  # , KoopaGreen(500, 50, 600)
             all_koopagreen.list = []  # , KoopaGreen(500, 50, 600)
             self.all_monster.__init__(all_koopagreen, all_goomba, self.camera)
             # self.map = Map(5000, 600, [[0] * 30 for _ in range(250)], 250, 30)
@@ -331,14 +334,14 @@ class Stage:
                 all_goomba = All_goomba(2)
                 all_goomba.list = [Goomba(20, 50, 100), Goomba(1700, 550, 1800), Goomba(1800, 550, 1900),
                                    Goomba(1900, 550, 2000),
-                                   Goomba(3500, 350, 3600), Goomba(3500, 350, 3550), Goomba(3500, 350, 3650),
-                                   Goomba(2050, 50, 2150), Goomba(2100, 50, 2200),
-                                   Goomba(2150, 50, 2200), Goomba(2120, 50, 2200),
-                                   Goomba(3000, 250, 3100), Goomba(3000, 250, 3050),
-                                   Goomba(3000, 250, 3150)
-                                   ]
+                                   Goomba(3400, 350, 3600), Goomba(3500, 350, 3700), Goomba(3600, 350, 3800)]
 
                 all_koopagreen = All_koopagreen(2)
+                all_koopagreen.list = [KoopaGreen(2050, 50, 2150), KoopaGreen(2100, 50, 2200),
+                                       KoopaGreen(2900, 250, 3000), KoopaGreen(3000, 250, 3100),
+                                       KoopaGreen(3100, 250, 3200),
+                                       KoopaGreen(3200, 250,
+                                                  3300), ]  # , KoopaGreen(500, 50, 600)
                 all_koopagreen.list = []  # , KoopaGreen(500, 50, 600)
                 self.all_monster.__init__(all_koopagreen, all_goomba, self.camera)
                 self.map.__init__(5000, 600, [[0] * 30 for _ in range(252)], 250, 30)

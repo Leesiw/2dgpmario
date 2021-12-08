@@ -138,7 +138,8 @@ class Box:
                         self.hit_bool = True
                         self.speed = (30.0 * 1000.0 / 60.0) / 60.0 * 10.0 / 0.25
                         self.time = game_framework.time.time()
-                        self.hit_sound.play(1)
+                        if len(self.item_que) != 0:
+                            self.hit_sound.play(1)
 
             if self.y < c_bottom <= self.top: # 블록 위에 섰을 때
                 character.y = self.top + character.size_y / 2
