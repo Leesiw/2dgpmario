@@ -36,11 +36,11 @@ class Stage:
             all_goomba = All_goomba(2)
             all_goomba.list = [Goomba(20, 50, 100), Goomba(1700, 550, 1800), Goomba(1800, 550, 1900),
                                Goomba(1900, 550, 2000),
-                               Goomba(3400, 350, 3600), Goomba(3500, 350, 3700), Goomba(3600, 350, 3800)]
+                               Goomba(3400, 450, 3600), Goomba(3500, 450, 3700), Goomba(3600, 450, 3800)]
             all_koopagreen = All_koopagreen(2)
-            all_koopagreen.list = [KoopaGreen(2050, 50, 2150), KoopaGreen(2100, 50, 2200),
-                                   KoopaGreen(3000, 250, 3100), KoopaGreen(3100, 250, 3200),
-                                   KoopaGreen(3200, 250,
+            all_koopagreen.list = [# KoopaGreen(2050, 50, 2150), KoopaGreen(2100, 50, 2200),
+                                   KoopaGreen(3000, 350, 3100), KoopaGreen(3100, 350, 3200),
+                                   KoopaGreen(3200, 350,
                                               3300), ]  # , KoopaGreen(500, 50, 600)
             self.all_monster = All_monster(all_koopagreen, all_goomba, self.camera)
             self.map = Map(5000, 600, [[0] * 30 for _ in range(252)], 250, 30)
@@ -261,11 +261,11 @@ class Stage:
             all_goomba = All_goomba(2)
             all_goomba.list = [Goomba(20, 50, 100), Goomba(1700, 550, 1800), Goomba(1800, 550, 1900),
                                Goomba(1900, 550, 2000),
-                               Goomba(3400, 350, 3600), Goomba(3500, 350, 3700), Goomba(3600, 350, 3800)]
+                               Goomba(3400, 450, 3600), Goomba(3500, 450, 3700), Goomba(3600, 450, 3800)]
             all_koopagreen = All_koopagreen(2)
-            all_koopagreen.list = [KoopaGreen(2050, 50, 2150), KoopaGreen(2100, 50, 2200),
-                                   KoopaGreen(3000, 250, 3100), KoopaGreen(3100, 250, 3200),
-                                   KoopaGreen(3200, 250,
+            all_koopagreen.list = [#KoopaGreen(2050, 50, 2150), KoopaGreen(2100, 50, 2200),
+                                   KoopaGreen(3000, 350, 3100), KoopaGreen(3100, 350, 3200),
+                                   KoopaGreen(3200, 350,
                                               3300), ]  # , KoopaGreen(500, 50, 600)
 
             self.all_monster.__init__(all_koopagreen, all_goomba, self.camera)
@@ -292,10 +292,12 @@ class Stage:
             all_goomba = All_goomba(2)
             all_goomba.list = [Goomba(20, 50, 100), Goomba(1700, 550, 1800), Goomba(1800, 550, 1900),
                                Goomba(1900, 550, 2000),
-                               Goomba(3400, 350, 3600), Goomba(3500, 350, 3700), Goomba(3600, 350, 3800)]
+                               Goomba(3400, 450, 3600), Goomba(3500, 450, 3700), Goomba(3600, 450, 3800)]
+
             all_koopagreen = All_koopagreen(2)
             all_koopagreen.list = [KoopaGreen(2050, 50, 2150), KoopaGreen(2100, 50, 2200),
-                                   KoopaGreen(2900, 250, 3000), KoopaGreen(3000, 250, 3100), KoopaGreen(3100, 250, 3200),
+                                   KoopaGreen(2900, 350, 3000), KoopaGreen(3000, 250, 3100),
+                                   KoopaGreen(3100, 250, 3200),
                                    KoopaGreen(3200, 250,
                                               3300), ]  # , KoopaGreen(500, 50, 600)
             all_koopagreen.list = []  # , KoopaGreen(500, 50, 600)
@@ -334,11 +336,11 @@ class Stage:
                 all_goomba = All_goomba(2)
                 all_goomba.list = [Goomba(20, 50, 100), Goomba(1700, 550, 1800), Goomba(1800, 550, 1900),
                                    Goomba(1900, 550, 2000),
-                                   Goomba(3400, 350, 3600), Goomba(3500, 350, 3700), Goomba(3600, 350, 3800)]
+                                   Goomba(3400, 450, 3600), Goomba(3500, 450, 3700), Goomba(3600, 450, 3800)]
 
                 all_koopagreen = All_koopagreen(2)
                 all_koopagreen.list = [KoopaGreen(2050, 50, 2150), KoopaGreen(2100, 50, 2200),
-                                       KoopaGreen(2900, 250, 3000), KoopaGreen(3000, 250, 3100),
+                                       KoopaGreen(2900, 350, 3000), KoopaGreen(3000, 250, 3100),
                                        KoopaGreen(3100, 250, 3200),
                                        KoopaGreen(3200, 250,
                                                   3300), ]  # , KoopaGreen(500, 50, 600)

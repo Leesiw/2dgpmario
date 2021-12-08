@@ -48,6 +48,8 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.push_state(pause_state)
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_m:
+            server.stage.ui.score = server.stage.ui.full_score
         else:
             server.stage.mario.handle_event(event)
 
