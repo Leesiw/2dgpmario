@@ -26,6 +26,8 @@ class Ui:
 
         if server.stage.goal_in_bool:
             self.font.draw(400, 300, 'Stage Complete', (255, 255, 255))
+            if self.score >= self.full_score:
+                self.font.draw(server.stage.mario.x - camera_x - 100, server.stage.mario.y - camera_y + 100, 'Full Score!', (255, 255, 255))
 
     def update(self):
         self.time -= game_framework.frame_time

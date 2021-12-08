@@ -5,6 +5,7 @@ DIE = 3
 
 power_down = None
 power_up = None
+life_up = None
 
 def power_up_play():
     global power_up
@@ -18,6 +19,13 @@ def power_down_play():
         power_down = pico2d.load_music('resource/Power down.wav')
     power_down.play(1)
 
+
+def life_up_play():
+    global life_up
+    if life_up == None:
+        life_up = pico2d.load_music('resource/1-Up.wav')
+    life_up.play(1)
+
 def mario_with_monster(m, monster):
     if 0 < m.x - monster.x < monster.size_x or 0 < monster.x - m.x < m.size_x:
         if 0 < monster.y + monster.size_y - m.y < m.size_y / 2:
@@ -30,6 +38,7 @@ def mario_with_monster(m, monster):
         elif m.y < monster.y + monster.size_y:
             if m.state == 0:
                 m.state = DIE
+                m.die_timer = time.time()
             elif m.state == 1:
                 m.state = 0
                 m.jump_power_first = 50.0
@@ -62,16 +71,23 @@ def mario_with_item(m, item):
             if item.type == 0:
                 server.stage.ui.score += 50
                 if m.state == 0:
-                    m.state = 1
+                    m.sizeup = True
+                    m.sizeup_timer = time.time()
                     m.jump_power_first = 70.0
+                    m.state = 1
                     m.size_y = 60
                     power_up_play()
             elif item.type == 1:
                 server.stage.ui.score += 100
                 server.stage.ui.life_num += 1
+                life_up_play()
             elif item.type == 2:
-                server.stage.ui.score += 70
+                if m.state == 0:
+                    m.sizeup_timer = time.time()
+                    m.sizeup = True
+
                 m.state = 2
+                server.stage.ui.score += 70
                 m.jump_power_first = 70.0
                 m.size_y = 60
                 m.fire_bool = True

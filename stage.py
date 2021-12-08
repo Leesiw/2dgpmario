@@ -34,7 +34,7 @@ class Stage:
         if id == 1: # 테스트용 맵
             self.mario = Mario(600, 50)
             all_goomba = All_goomba(2)
-            all_goomba.list = [Goomba(00, 50, 100), Goomba(1700, 550, 1800), Goomba(1800, 550, 1900), Goomba(1900, 550, 2000),
+            all_goomba.list = [Goomba(20, 50, 100), Goomba(1700, 550, 1800), Goomba(1800, 550, 1900), Goomba(1900, 550, 2000),
                                Goomba(3500, 350, 3600), Goomba(3500, 350, 3550), Goomba(3500, 350, 3650)]
             all_koopagreen = All_koopagreen(2)
             all_koopagreen.list = [KoopaGreen(2050, 50, 2150), KoopaGreen(2100, 50, 2200), KoopaGreen(2150, 50, 2200), KoopaGreen(2120, 50, 2200),
@@ -224,8 +224,11 @@ class Stage:
 
         # 마리오와 몬스터 상호작용
         if self.mario.unbeatable:
-            if time.time() > self.mario.unbeatable_timer + 3.0:
+            if time.time() > self.mario.unbeatable_timer + 0.9:
                 self.mario.unbeatable = False
+                if self.mario.state == SMALL:
+                    self.mario.size_y = 40
+
         else:
             if not self.goal_in_bool:
                 for g in self.all_monster.goomba.list:
@@ -252,7 +255,7 @@ class Stage:
         if id == 1:  # 테스트용 맵
             self.mario.__init__(600, 50)
             all_goomba = All_goomba(2)
-            all_goomba.list = [Goomba(00, 50, 100), Goomba(1700, 550, 1800), Goomba(1800, 550, 1900),
+            all_goomba.list = [Goomba(20, 50, 100), Goomba(1700, 550, 1800), Goomba(1800, 550, 1900),
                                Goomba(1900, 550, 2000),
                                Goomba(3500, 350, 3600), Goomba(3500, 350, 3550), Goomba(3500, 350, 3650)]
             all_koopagreen = All_koopagreen(2)
@@ -283,7 +286,7 @@ class Stage:
         elif id == 2:
             self.mario.__init__(600, 50)
             all_goomba = All_goomba(2)
-            all_goomba.list = [Goomba(00, 50, 100), Goomba(1700, 550, 1800), Goomba(1800, 550, 1900),
+            all_goomba.list = [Goomba(20, 50, 100), Goomba(1700, 550, 1800), Goomba(1800, 550, 1900),
                                Goomba(1900, 550, 2000),
                                Goomba(3500, 350, 3600), Goomba(3500, 350, 3550), Goomba(3500, 350, 3650),
                                Goomba(2050, 50, 2150), Goomba(2100, 50, 2200),
@@ -326,7 +329,7 @@ class Stage:
             if id == 2:  # 테스트용 맵
                 self.mario.__init__(600, 50)
                 all_goomba = All_goomba(2)
-                all_goomba.list = [Goomba(00, 50, 100), Goomba(1700, 550, 1800), Goomba(1800, 550, 1900),
+                all_goomba.list = [Goomba(20, 50, 100), Goomba(1700, 550, 1800), Goomba(1800, 550, 1900),
                                    Goomba(1900, 550, 2000),
                                    Goomba(3500, 350, 3600), Goomba(3500, 350, 3550), Goomba(3500, 350, 3650),
                                    Goomba(2050, 50, 2150), Goomba(2100, 50, 2200),

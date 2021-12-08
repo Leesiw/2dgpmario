@@ -91,7 +91,7 @@ class DieState:
         pass
 
     def do(mario):
-        mario.frame = (mario.frame + mario.action_speed / 2 * game_framework.frame_time)
+        mario.frame = (mario.frame + mario.action_speed / 2 * game_framework.frame_time) % 4
 
     def draw(mario, camera_x, camera_y):
         mario.image.clip_draw(50 + int(mario.frame) * 25, 27, 25, 24, mario.x - camera_x, mario.y - camera_y
@@ -133,9 +133,12 @@ class Mario:
         self.state = SMALL
         self.unbeatable = False
         self.unbeatable_timer = 0.0
+        self.sizeup = False
+        self.sizeup_timer = 0.0
         self.on_box = False
         self.fire_bool = True
         self.fire_timer = 0.0
+        self.die_timer = 0.0
         if Mario.jump_sound == None:
             Mario.jump_sound = load_music('resource/Jump.wav')
             Mario.jump_sound.set_volume(32)
@@ -155,7 +158,25 @@ class Mario:
         self.event_que.insert(0, event)
 
     def update(self):
+        # if self.state == SMALL:
+        #     self.size_y = 40
         server.stage.all_box.collide(self)
+        if self.sizeup:
+            if (self.sizeup_timer - game_framework.time.time()) % 0.5 > 0.25:
+                self.size_y = 40
+            else:
+                self.size_y = 60
+
+            if self.sizeup_timer < game_framework.time.time() - 1.0:
+                self.size_y = 60
+                self.sizeup = False
+
+        if self.unbeatable and self.state == SMALL:
+            if (self.unbeatable_timer - game_framework.time.time()) % 0.5 > 0.25:
+                self.size_y = 40
+            else:
+                self.size_y = 60
+
 
         if self.state == DIE and not self.cur_state == DieState:
             self.die_sound.play(1)
@@ -163,7 +184,7 @@ class Mario:
             self.cur_state = DieState
             self.frame = 0
             self.cur_state.enter(self, None)
-        elif self.state == DIE and self.frame > 4:
+        elif self.state == DIE and self.die_timer < game_framework.time.time() - 3.0:
             life_num = server.stage.ui.life_num
             id = server.stage.id
             server.stage.restart(id)
